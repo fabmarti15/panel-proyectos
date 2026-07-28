@@ -1,0 +1,4 @@
+# La fuente en claro y el cifrador viven fuera del repo, pero por si acaso:
+proyectos.json
+cifrar.py
+.DS_Store
