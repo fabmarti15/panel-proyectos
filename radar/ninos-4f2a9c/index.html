@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colegio y deportes · 30 julio 2026</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FFFFFF; --surface:#FBFBFA; --line:#EDEDEA; --line-2:#F5F5F3;
+  --t1:#1D1D1F; --t2:#6B6B70; --t3:#A6A6AB;
+  --juanjo:#1D1D1F; --juanjo-bg:#F5F5F3;
+  --jaci:#1D1D1F; --jaci-bg:#F5F5F3;
+  --xabi:#1D1D1F; --xabi-bg:#F5F5F3;
+  --soon:#6B6B70; --soon-bg:#F5F5F3;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased; scroll-behavior:smooth}
+body{background:var(--bg); color:var(--t1); font-family:var(--sans); font-size:15px; line-height:1.55; font-variant-numeric:tabular-nums}
+.wrap{max-width:1060px; margin:0 auto; padding:34px 32px 100px}
+@media(max-width:700px){.wrap{padding:24px 18px 70px}}
+a{color:inherit}
+
+.head{display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); margin-bottom:10px}
+.head a.back{font-size:13px; color:var(--t3); text-decoration:none}
+.head a.back:hover{color:var(--t1)}
+.head h1{font-size:16px; font-weight:600; letter-spacing:-.01em}
+.head .date{margin-left:auto; font-size:12.5px; color:var(--t3)}
+.stamp{font-size:12px; color:var(--t3); margin-bottom:30px}
+
+/* ---- accionables ---- */
+.sect-title{display:flex; align-items:baseline; gap:10px; margin:0 0 16px}
+.sect-title h2{font-size:20px; font-weight:600; letter-spacing:-.02em}
+.sect-title span{font-size:12.5px; color:var(--t3)}
+
+.quiet{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-size:13.5px; color:var(--t2); margin-top:16px}
+.quiet b{color:var(--t1); font-weight:600}
+
+.act{display:block; padding:12px 0; border-bottom:1px solid var(--line-2); text-decoration:none; color:inherit}
+.act:last-of-type{border-bottom:0}
+.act .txt{display:block; font-size:14px; line-height:1.45; font-weight:500}
+.act .sub{display:block; margin-top:3px; font-size:13px; color:var(--t2)}
+.act .sub b{color:var(--t1); font-weight:500}
+
+.dash{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start}
+@media(max-width:880px){.dash{grid-template-columns:1fr}}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 16px 8px}
+.card > header{display:flex; align-items:baseline; gap:8px; padding-bottom:11px; margin-bottom:2px; border-bottom:1px solid var(--line)}
+.card > header h3{font-size:15.5px; font-weight:600; color:var(--acc)}
+.card > header span{font-size:11.5px; color:var(--t3); margin-left:auto}
+
+/* ---- detalle ---- */
+.big{margin-top:60px; padding-top:22px; border-top:2px solid var(--line)}
+.big > .sect-title h2{font-size:22px}
+.kid{padding:26px 0 4px}
+.kid + .kid{border-top:1px solid var(--line)}
+.kid > h4{display:flex; align-items:baseline; gap:9px; font-size:17px; font-weight:600; letter-spacing:-.015em; color:var(--acc); margin-bottom:14px}
+.kid > h4 em{font-style:normal; font-size:11.5px; color:var(--acc); background:var(--acc-bg); border-radius:20px; padding:3px 9px; font-weight:400}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:0 40px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.item{padding:15px 0; border-bottom:1px solid var(--line-2)}
+.item .meta{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:4px}
+.item .when{font-size:12px; color:var(--t2)}
+.item .flag{font-size:10.5px; color:var(--t3); background:var(--line-2); border-radius:20px; padding:2px 8px}
+.item .flag.must{color:var(--soon); background:var(--soon-bg)}
+.item h5{font-size:14.5px; font-weight:600; margin-bottom:3px}
+.item p{font-size:13.5px; color:var(--t2); max-width:54ch}
+.item .todo{display:block; margin-top:6px; font-size:13px; color:var(--acc)}
+.item q{display:block; margin-top:6px; font-size:12.5px; color:var(--t3); quotes:none}
+.item q::before{content:"“"} .item q::after{content:"”"}
+
+.clash{margin-top:40px; background:var(--soon-bg); border-radius:14px; padding:18px 20px}
+.clash h3{font-size:14.5px; font-weight:600; margin-bottom:9px}
+.clash ul{list-style:none; display:grid; gap:8px}
+.clash li{font-size:13.5px; color:var(--t2); padding-left:14px; position:relative}
+.clash li::before{content:""; position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--soon); opacity:.6}
+.clash strong{color:var(--t1); font-weight:600}
+
+.foot{margin-top:40px; padding-top:16px; border-top:1px solid var(--line)}
+.foot p{font-size:12.5px; color:var(--t3); line-height:1.6; max-width:80ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>Colegio y deportes</h1>
+    <span class="date">WhatsApp revisado: mar 28 de julio, 16:08</span>
+  </div>
+  <div class="stamp">Próxima actualización: viernes 31 de julio a las 6:45.</div>
+
+  <div class="quiet" style="margin-bottom:30px"><b>Snapshot viejo: 39 horas.</b> La copia de WhatsApp quedó en el martes 28 a las 16:08 y el respaldo automático de las 6:30 no corrió, así que este panel no incluye nada de lo que se haya dicho desde entonces. Para actualizarlo, corre en Terminal:<br><code>bash ~/Documents/Claude\ 2/05\ Herramientas/WhatsApp\ Asistente/scripts/sincronizar-snapshot.sh</code></div>
+
+  <!-- ================= COLEGIO ================= -->
+  <div class="sect-title"><h2>Colegio</h2><span>lo que hay que hacer</span></div>
+
+  <section class="dash">
+
+    <div class="card">
+      <header><h3>Juanjo</h3><span>6° D</span></header>
+
+      <a class="act" href="#c-juanjo">
+        <span class="txt">Mandar colación compartida y almuerzo picnic</span>
+        <span class="sub"><b>Jueves 30 de julio.</b> Para el retiro «Encuentro con Cristo». Si tiene casino contratado, el picnic lo da el colegio.</span>
+      </a>
+
+      <a class="act" href="#c-juanjo">
+        <span class="txt">Decir en el grupo si acompañas el retiro</span>
+        <span class="sub"><b>Jueves 30 de julio, 9:00 a 15:30.</b> Buscan cinco papás y la lista sigue abierta.</span>
+      </a>
+
+      <a class="act" href="#c-juanjo">
+        <span class="txt">Tener el libro de lectura leído y en la mochila</span>
+        <span class="sub"><b>Lunes 3 de agosto,</b> fecha inferida. Hay quiebre de stock: una apoderada no lo encontró en tres librerías ni en el colegio.</span>
+      </a>
+
+      <a class="act" href="#d-juanjo">
+        <span class="txt">Confirmar si va al ensayo de la banda y quién lo lleva</span>
+        <span class="sub"><b>Viernes 31 de julio, 16:30 a 18:00.</b> Gaby ofreció preguntarle a Agustín si puede ir y dos papás ya dijeron que sí. El transporte se rota entre las familias, así que hay que decir si llevas, traes o ninguna.</span>
+      </a>
+
+      <a class="act" href="#c-juanjo">
+        <span class="txt">Cerrar la fecha del paseo padre–hijo de 6°</span>
+        <span class="sub"><b>Propuesto el sábado 17 de octubre,</b> pero sigue en discusión: nadie lo confirmó desde mayo y falta armar el comité.</span>
+      </a>
+    </div>
+
+    <div class="card">
+      <header><h3>Jaci</h3><span>4° D</span></header>
+
+      <a class="act" href="#c-jaci">
+        <span class="txt">Se sugiere ir a la Fiesta de la Luz</span>
+        <span class="sub"><b>Martes 1 de septiembre, 19:30,</b> en el colegio. Hito de la Primera Comunión, van padres e hijos.</span>
+      </a>
+
+      <a class="act" href="#c-jaci">
+        <span class="txt">Bloquear el día de la Primera Comunión</span>
+        <span class="sub"><b>Sábado 24 de octubre.</b> Choca con el paseo padre–hijo de Xabi, que es el 24 y 25.</span>
+      </a>
+
+      <a class="act" href="#c-jaci">
+        <span class="txt">Feriado, no hay clases</span>
+        <span class="sub"><b>Sábado 15 de agosto.</b></span>
+      </a>
+    </div>
+
+    <div class="card">
+      <header><h3>Xabi</h3><span>Prekínder C</span></header>
+
+      <a class="act" href="#c-xabi">
+        <span class="txt">Confirmar si vas a la piscolada de los papás</span>
+        <span class="sub"><b>Jueves 30 de julio, 20:30,</b> en Buena Barra, Las Condes. Cinco confirmados. Cae el mismo día del retiro de Juanjo.</span>
+      </a>
+
+      <a class="act" href="#c-xabi">
+        <span class="txt">Bloquear el paseo padre–hijo</span>
+        <span class="sub"><b>Sábado 24 y domingo 25 de octubre.</b> Choca con la Primera Comunión de Jaci; en el curso se pidió reevaluar la fecha y quedó abierto.</span>
+      </a>
+
+      <a class="act" href="#c-xabi">
+        <span class="txt">Reservar el paseo familiar</span>
+        <span class="sub"><b>Domingo 22 de noviembre.</b> Los papás llegan con el resto de la familia al paseo madre–hijo, que es sábado 21 y domingo 22.</span>
+      </a>
+
+      <a class="act" href="#c-xabi">
+        <span class="txt">Vacaciones de septiembre</span>
+        <span class="sub"><b>Lunes 14 al domingo 20 de septiembre.</b></span>
+      </a>
+    </div>
+
+  </section>
+
+  <div class="quiet"><b>Deporte y banda:</b> lo único con fecha es el ensayo de la banda de Juanjo el viernes. Frontón de Xabi lunes, miércoles y viernes de 16:00 a 17:00; gimnasia de Jaci en el Colegio Alcázar a las 16:30; racquetball de Juanjo sin campeonatos anunciados.</div>
+
+  <!-- ================= COLEGIO ================= -->
+  <div class="big">
+    <div class="sect-title"><h2>Detalle · Colegio</h2><span>por curso</span></div>
+
+    <section class="kid" id="c-juanjo" style="--acc:var(--juanjo); --acc-bg:var(--juanjo-bg)">
+      <h4>Juanjo <em>Sexto D</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Jueves 30 de julio</span><span class="flag must">Hoy</span></div>
+            <h5>Retiro «Encuentro con Cristo»</h5>
+            <p>Colación compartida para media mañana y almuerzo tipo picnic simple. Quienes tienen casino contratado lo reciben del colegio.</p>
+            <q>Deben llevar colación compartida para media mañana y almuerzo tipo picnic (simple).</q>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Jueves 30 · 9:00 a 15:30</span><span class="flag">Lista abierta</span></div>
+            <h5>Buscan cinco papás para acompañar el retiro</h5>
+            <p>Pedido el 24 de julio como misión urgente. Todavía falta gente.</p>
+            <span class="todo">Contestar en el grupo, aunque sea que no puedes.</span>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Lunes 3 de agosto</span><span class="flag">Fecha inferida</span></div>
+            <h5>Entrega del libro de lectura</h5>
+            <p>La fecha la dijeron dos apoderados, no el colegio. A otra le llega uno encargado el 30 porque no lo encontró en ninguna parte.</p>
+          </div>
+        </div>
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Sábado 17 de octubre, propuesto</span><span class="flag">En discusión</span></div>
+            <h5>Paseo padre–hijo de 6° D, sin fecha confirmada</h5>
+            <p>Se propusieron dos fechas, el 26 de septiembre y el 17 de octubre, para no juntar todo a fin de año. La última postura fue quedarse con el 17, pero nadie lo cerró y el comité organizador quedó con un solo inscrito. Sigue abierto desde mayo.</p>
+            <q>Queda el 17 de octubre, hay que cortar el queque. ¿Alguien más se suma?</q>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Hasta el 31 de julio</span><span class="flag">Cierra esta semana</span></div>
+            <h5>Ofrendas del mes de la solidaridad</h5>
+            <p>Lo recolectado desde el 13 de julio se presenta en la liturgia del mes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kid" id="c-jaci" style="--acc:var(--jaci); --acc-bg:var(--jaci-bg)">
+      <h4>Jaci <em>Cuarto D</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Martes 1 de septiembre · 19:30</span><span class="flag">Sugerido</span></div>
+            <h5>Fiesta de la Luz, en el colegio</h5>
+            <p>Hito del proceso de Primera Comunión, con padres e hijos. Del mismo calendario ya pasaron el Taller de Inicio, el 14 de abril solo para papás, y la Misa Explicada del 6 de mayo.</p>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Sábado 24 de octubre</span><span class="flag must">Choca con Xabi</span></div>
+            <h5>Primera Comunión de los cuartos básicos</h5>
+            <p>Coincide con el paseo padre–hijo de Prekínder C, del 24 y 25. En ese curso se pidió reevaluar la fecha en marzo y quedó sin respuesta.</p>
+          </div>
+        </div>
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Sábado 15 de agosto</span><span class="flag">Feriado</span></div>
+            <h5>Sin clases</h5>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kid" id="c-xabi" style="--acc:var(--xabi); --acc-bg:var(--xabi-bg)">
+      <h4>Xabi <em>Prekínder C</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Jueves 30 de julio · 20:30</span><span class="flag">Voluntario</span></div>
+            <h5>Piscolada de los papás del curso</h5>
+            <p>En Buena Barra, Las Condes. Cinco confirmados.</p>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Lunes 14 al domingo 20 de septiembre</span><span class="flag">Informativo</span></div>
+            <h5>Vacaciones de septiembre</h5>
+            <p>Una semana completa, del calendario anual del curso.</p>
+          </div>
+        </div>
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Sábado 24 y domingo 25 de octubre</span><span class="flag must">Choca con Jaci</span></div>
+            <h5>Paseo padre–hijo de Prekínder C</h5>
+            <p>Al menos dos familias del curso tienen el mismo problema con la comunión de los cuartos y ya se pidió reevaluar.</p>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Domingo 22 de noviembre</span><span class="flag">Sugerido</span></div>
+            <h5>Paseo familiar</h5>
+            <p>El paseo madre–hijo es sábado 21 y domingo 22, y el domingo los papás llegan con el resto de la familia.</p>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Resto del año</span><span class="flag">Calendario</span></div>
+            <h5>Lo que viene después</h5>
+            <p>Sábado 7 de noviembre encuentro preescolar. Viernes 11 de diciembre último día de clases. Lunes 14 y martes 15 de diciembre, entrevistas de cierre.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= DEPORTES ================= -->
+  <div class="big">
+    <div class="sect-title"><h2>Detalle · Deporte</h2><span>uno por hijo</span></div>
+
+    <section class="kid" id="d-juanjo" style="--acc:var(--juanjo); --acc-bg:var(--juanjo-bg)">
+      <h4>Juanjo <em>Banda, racquetball y fútbol</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Banda · viernes 16:30 a 18:00</span><span class="flag">Viernes 31</span></div>
+            <h5>Ensayo semanal en la sala arrendada</h5>
+            <p>Son siete familias que arriendan la sala y se reparten todo. El coach es Agustín Carvajal, baterista y guitarrista de Legislatura, que va unas dos veces al mes; cuando va, el pago se divide entre las siete, del orden de $10.000 por familia por sesión.</p>
+            <p>El transporte se coordina en el grupo cada semana: alguien baja a los niños, alguien se queda durante el ensayo y alguien los devuelve. Conviene ofrecer turno de vez en cuando.</p>
+            <span class="todo">Esta semana Gaby preguntó si le avisa a Agustín para el viernes 31 y dos papás dijeron que sí.</span>
+          </div>
+        </div>
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Racquetball · Escuela del Estadio Español</span><span class="flag">Sin fechas por delante</span></div>
+            <h5>Clases normales, sin campeonatos anunciados</h5>
+            <p>El profe avisa por el grupo el mismo día cuando algo se cae, así que conviene tener el grupo a mano.</p>
+          </div>
+
+          <div class="item">
+            <div class="meta"><span class="when">Fútbol · Sub Peque 2026</span><span class="flag">Sin fechas por delante</span></div>
+            <h5>Sin convocatorias ni pagos pendientes</h5>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kid" id="d-jaci" style="--acc:var(--jaci); --acc-bg:var(--jaci-bg)">
+      <h4>Jaci <em>Gimnasia</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Colegio Alcázar · 16:30</span><span class="flag">Sin fechas por delante</span></div>
+            <h5>Ahí siguen las clases mientras están reubicadas</h5>
+            <p>No hay presentaciones ni pagos agendados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kid" id="d-xabi" style="--acc:var(--xabi); --acc-bg:var(--xabi-bg)">
+      <h4>Xabi <em>Frontón</em></h4>
+      <div class="grid">
+        <div>
+          <div class="item">
+            <div class="meta"><span class="when">Lunes, miércoles y viernes · 16:00 a 17:00</span><span class="flag">Horario firme</span></div>
+            <h5>El bloque de las 16:00 es el de su edad</h5>
+            <q>A las 16:00 para la edad de Xabi.</q>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="clash">
+    <h3>Dos choques de fecha</h3>
+    <ul>
+      <li><strong>Jueves 30 de julio.</strong> Retiro de Juanjo de 9:00 a 15:30 buscando acompañantes, y piscolada de los papás de Xabi a las 20:30. Mismo día, distinto horario.</li>
+      <li><strong>Sábado 24 de octubre.</strong> Primera Comunión de Jaci contra el paseo padre–hijo de Xabi del 24 y 25. Este sí es excluyente. En Prekínder C se ofreció reevaluar la fecha en marzo y nadie insistió.</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <p>Se revisaron los grupos de los tres cursos, los de papás, los deportivos de los niños y los chats con las profesoras. Se descartaron los grupos de pádel de adultos y los resultados de partidos.</p>
+  </div>
+
+</div>
+</body>
+</html>
