@@ -31,6 +31,9 @@
   --c6-bg:#EAF0E2; --c6-bd:#D3DFC6; --c6-ac:#54703C;
   --c7-bg:#FBE2DE; --c7-bd:#F0C6BF; --c7-ac:#9E3B2E;
   --c8-bg:#EFEDE7; --c8-bd:#DFDBD1; --c8-ac:#6A665F;
+  --c9-bg:#DFF0F2; --c9-bd:#BFDFE4; --c9-ac:#256670;
+  --c10-bg:#F3E9DE; --c10-bd:#E3D2BF; --c10-ac:#7A5A34;
+  --c11-bg:#E7E9F6; --c11-bd:#CDD1EC; --c11-ac:#464C87;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
@@ -363,12 +366,15 @@ a{color:inherit}
 
     document.getElementById("corte").textContent = "Corte "+datos.corte;
 
+    var PALETAS = 12;
+    function pal(k){ return k % PALETAS; }
+
     document.getElementById("saltos").innerHTML = datos.grupos.map(function(g,k){
-      return '<a class="salto" href="#g'+k+'" style="--ac:var(--c'+k+'-ac)"><i></i>'+esc(g.nombre.split(" (")[0])+' <b>'+g.items.length+'</b></a>';
+      return '<a class="salto" href="#g'+k+'" style="--ac:var(--c'+pal(k)+'-ac)"><i></i>'+esc(g.nombre.split(" (")[0])+' <b>'+g.items.length+'</b></a>';
     }).join("");
 
     document.getElementById("lista").innerHTML = datos.grupos.map(function(g,k){
-      var v = '--ac:var(--c'+k+'-ac); --bg:var(--c'+k+'-bg); --bd:var(--c'+k+'-bd)';
+      var v = '--ac:var(--c'+pal(k)+'-ac); --bg:var(--c'+pal(k)+'-bg); --bd:var(--c'+pal(k)+'-bd)';
       return '<section class="grupo" id="g'+k+'" data-grupo style="'+v+'">'+
         '<div class="grupo-tapa"><i></i><h2>'+esc(g.nombre)+'</h2><span class="n">'+g.items.length+'</span></div>'+
         '<div class="rejilla">'+g.items.map(ficha).join("")+'</div></section>';
