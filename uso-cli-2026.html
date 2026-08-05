@@ -7,7 +7,7 @@
 <style>
 :root{
   --bg:#fbfaf9; --fg:#1c1b1a; --dim:#8a8783; --line:#e9e6e2; --card:#fff;
-  --claude:#d97757; --codex:#7c93a8; --hi:#1c1b1a;
+  --claude:#d97757; --codex:#2d5f7f; --hi:#1c1b1a;
 }
 *{box-sizing:border-box}
 body{margin:0;padding:48px 24px 80px;background:var(--bg);color:var(--fg);
@@ -36,7 +36,11 @@ h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
 section{margin-bottom:52px}
 h2{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
   color:var(--dim);margin:0 0 4px}
-.h2sub{font-size:12px;color:var(--dim);margin:0 0 18px}
+.h2sub{font-size:12px;color:var(--dim);margin:0 0 14px}
+.lg{display:flex;gap:16px;font-size:12px;margin:0 0 16px;flex-wrap:wrap}
+.lg span{display:inline-flex;align-items:center;gap:6px;color:var(--fg)}
+.lg i{width:11px;height:11px;border-radius:3px;display:block}
+.seglab{font-size:10.5px;font-weight:600;fill:#fff;letter-spacing:.02em}
 svg{width:100%;display:block;overflow:visible}
 .grid line{stroke:var(--line)}
 .axis{fill:var(--dim);font-size:11px}
@@ -74,27 +78,10 @@ tr.hid{display:none}
 .fact span:first-child{color:var(--dim)}
 .fact span:last-child{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
 
-#gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;
-  justify-content:center;z-index:200}
-#gate .box{width:280px;text-align:center}
-#gate h3{font-size:15px;font-weight:600;margin:0 0 4px}
-#gate p{font-size:12.5px;color:var(--dim);margin:0 0 18px}
-#gate input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
-  font:inherit;font-size:14px;text-align:center;background:var(--card);color:var(--fg)}
-#gate input:focus{outline:none;border-color:var(--fg)}
-#gate .err{color:#c0392b;font-size:12px;height:16px;margin-top:9px}
-#app{display:none}
 </style>
 </head>
 <body>
 <div id="tip"></div>
-<div id="gate"><div class="box">
-  <h3>Uso de CLI de agentes</h3>
-  <p>Contenido privado. Ingresa la clave.</p>
-  <input id="pw" type="password" autofocus autocomplete="off" placeholder="clave">
-  <div class="err" id="err"></div>
-</div></div>
-<div id="app">
 <div class="wrap">
 
 <h1>Uso de CLI de agentes · 2026</h1>
@@ -115,12 +102,14 @@ tr.hid{display:none}
 <section>
   <h2>Costo mensual</h2>
   <p class="h2sub" id="s1">USD</p>
+  <div class="lg" id="lg-c-cost"></div>
   <svg id="c-cost" viewBox="0 0 800 260" preserveAspectRatio="none" height="260"></svg>
 </section>
 
 <section>
   <h2>Tokens totales por mes</h2>
   <p class="h2sub" id="s2">Millones de tokens (entrada + salida)</p>
+  <div class="lg" id="lg-c-tok"></div>
   <svg id="c-tok" viewBox="0 0 800 260" preserveAspectRatio="none" height="260"></svg>
 </section>
 
@@ -134,6 +123,7 @@ tr.hid{display:none}
 <section>
   <h2>Tendencia</h2>
   <p class="h2sub" id="s4">Costo mensual por agente · escala lineal</p>
+  <div class="lg" id="lg-c-trend"></div>
   <svg id="c-trend" viewBox="0 0 800 240" preserveAspectRatio="none" height="240"></svg>
 </section>
 
@@ -152,15 +142,26 @@ tr.hid{display:none}
 <div class="notes" id="notes"></div>
 
 </div>
-</div>
 
 <script>
-/* ── datos (cifrados) ───────────────────────────────────────────── */
-const CIFRADO = {"v": 1, "iter": 200000, "salt": "LOvtx3gniro6n4xREc3I2Q==", "iv": "Lp6tn6Nfx5X+Su9K", "ct": "ekyWlNw1bshUlIr9adA7NLZepjgo7z7e6tLpTBu/6eTCtkon13WLiY7glbpj99OV2545Nn019tFo50mWRndnveyqttKVajCu1FbT/mUUfkIoz7eHlKvHapEQQdv6ABGzN315zSwVQ2xKa8guDT5YcHmXr9Oi1TEMPgzgGAu68yTIXV5pwTQvj9JpTadvD0DJvrpCUBxeXdN3/pJQMH6UuuDNR1P0IC5+NrXXpW0cRGGOfdt53a5kzb/hLcJW4D0itqGUOwFycKinlUCAaao1OtG0zT/oja5b3l5JmhrbcRsIGD8bgxjZJmGDkKeO1K7CX6koi56DR+/RHMkWdYTj0nDxP88ODvlSqBqgysJw0EKZvzgnseo46R/poxaP/lSjNt523TbFuwgOaup1IP/wwKb9Etd597kMqiP7iJ0IOqXHVnP5Ktx7/p+/0f6xxYnXClBcCTy7Ws5CBI1nD9KKA5DQd7AYQKXe0FcC1ZcyfUc/bQrtNThi6oQpgLn3ewgqIwmY7af1EFw8fRRkt5hKhmEvMMyGl9jgaiafY88TUG4C3KXOBSon6epgz9PExY/gN4TK11F75X6mSvC9/v6lRP0zIGnU1hxrgEYwxh0QpShYXRNkJDU//AWEmcoxpihIISYLWqky0mjQSzqhU6oS+oQmkQwDXHC6cmwnDsqpDydqNNcXUEGY3ua7Oaqy9SaJBAGmGj5UFcbQuGFnyXtGVHQBuVSXqrYPJugfBYXTsfvqncFeOkpAiu/rb8O298lUbtmjNBDm7jN/EYoClFRr0MypuBL1j8Ks5RTFxCIBvBfgsE4Q1Nw5mjJsKT4EOTrkH5U1jhoXSa7HDxd0yJipkl0z9/2GDFMoY3ZHpxzmpAouMMMHrZgdhQ8v840XvCF5n5uFUsnoLFmRPH5hYergbAKQo5A9V2h5TWSD3DDOB8LRGL4nkj0XlvQfifSlHauRn89reJwAcqOSH/7Zm9OjTSSeTNHYHe6mmCnIdIRY0/6GzUqd7IbHKlT9Ly5HdbR+SG9HWbIOt4miQo20p4wVrszIVbCu07pitmsYb+pPk7BCPF8Y6hznHASt6pt+YdVbaZnlmWOfOFUAMXjIrdY="};
-let D = [];
+/* ── datos ───────────────────────────────────────────────────────── */
+const D = [
+ {k:"2026-04", m:"Abr", ag:[
+   {n:"Codex", mo:["gpt-5.5"], in:1122699, out:70300, c:12.42}]},
+ {k:"2026-05", m:"May", ag:[
+   {n:"Codex", mo:["gpt-5.5"], in:4417395, out:252848, c:71.08}]},
+ {k:"2026-06", m:"Jun", ag:[
+   {n:"Claude", mo:["fable-5","haiku-4-5","opus-4-8","sonnet-4-6"], in:3294300, out:4667600, outA:1, c:627.04},
+   {n:"Codex",  mo:["gpt-5.5"], in:3952332, out:173664, c:47.80}]},
+ {k:"2026-07", m:"Jul", ag:[
+   {n:"Claude", mo:["fable-5","opus-4-8","sonnet-5"], in:1398175, out:874382, c:166.42},
+   {n:"Codex",  mo:["gpt-5.5","gpt-5.6-luna","gpt-5.6-sol","gpt-5.6-terra"], in:34998600, inA:1, out:2893700, outA:1, c:557.90}]},
+ {k:"2026-08", m:"Ago", ag:[
+   {n:"Codex", mo:["gpt-5.6-luna","gpt-5.6-sol","gpt-5.6-terra"], in:1367804, out:59086, c:9.14}], parcial:1}
+];
 const AG = ["Claude","Codex"];
 const COL = {Claude:"var(--claude)", Codex:"var(--codex)"};
-const HEX = {Claude:"#d97757", Codex:"#7c93a8"};
+const HEX = {Claude:"#d97757", Codex:"#2d5f7f"};
 
 /* ── estado ──────────────────────────────────────────────────────── */
 let on = {Claude:true, Codex:true};
@@ -193,6 +194,8 @@ function bind(el, html){
   el.addEventListener("mouseleave", ()=> tip.style.opacity = 0);
 }
 const row = (l,v) => `<div class="r"><span>${l}</span><span>${v}</span></div>`;
+const rowA = (a,v) => `<div class="r"><span><i style="display:inline-block;width:8px;height:8px;
+  border-radius:2px;background:${HEX[a]};margin-right:6px"></i>${a}</span><span>${v}</span></div>`;
 
 /* ── helpers svg ─────────────────────────────────────────────────── */
 const NS = "http://www.w3.org/2000/svg";
@@ -222,6 +225,13 @@ function xlabels(svg,H,PB,PL,W){
   });
 }
 
+/* ── leyenda ─────────────────────────────────────────────────────── */
+function legend(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.innerHTML = act().map(a=>
+    `<span><i style="background:${HEX[a]}"></i>${a}</span>`).join("");
+}
+
 /* ── barras (verticales) ─────────────────────────────────────────── */
 function bars(id, field, fmt, tipf){
   const svg=document.getElementById(id); svg.innerHTML="";
@@ -243,6 +253,10 @@ function bars(id, field, fmt, tipf){
         const bh=h(v); y-=bh;
         g.appendChild(mk("rect",{x:PL+bw*i+pad/2,y,width:inner,height:Math.max(1,bh),
           fill:HEX[a],rx:2}));
+        if(bh>20 && A.length>1){
+          const lb=mk("text",{x:PL+bw*i+bw/2,y:y+bh/2+4,class:"seglab","text-anchor":"middle"});
+          lb.textContent=a; g.appendChild(lb);
+        }
       });
     }else{
       const n=Math.max(1,A.length), w=inner/n-3;
@@ -251,6 +265,11 @@ function bars(id, field, fmt, tipf){
         const bh=h(v);
         g.appendChild(mk("rect",{x:PL+bw*i+pad/2+j*(w+3),y:H-PB-bh,width:w,
           height:Math.max(1,bh),fill:HEX[a],rx:2}));
+        if(bh>26 && A.length>1){
+          const lb=mk("text",{x:PL+bw*i+pad/2+j*(w+3)+w/2,y:H-PB-bh+14,
+            class:"seglab","text-anchor":"middle"});
+          lb.textContent=a; g.appendChild(lb);
+        }
       });
     }
     const t=mk("text",{x:PL+bw*i+bw/2,y:H-PB-h(mode==="stack"?sum(mo,field)
@@ -303,12 +322,16 @@ function trend(){
       fill:"none",stroke:HEX[a],"stroke-width":2,"stroke-linejoin":"round"}));
     pts.forEach((p,i)=>svg.appendChild(mk("circle",{cx:p[0],cy:p[1],r:3.6,
       fill:HEX[a],class:"dot"})));
+    const last=pts[pts.length-1];
+    const tg=mk("text",{x:last[0]+10,y:last[1]+4,fill:HEX[a],
+      style:"font-size:11.5px;font-weight:600"});
+    tg.textContent=a; svg.appendChild(tg);
   });
   D.forEach((mo,i)=>{
     const hit=mk("rect",{x:PL+bw*i,y:PT,width:bw,height:H-PT-PB,fill:"transparent"});
     svg.appendChild(hit);
     let html=`<b>${mo.m} 2026</b>`;
-    A.forEach(a=>html+=row(a, get(mo,a,"c")?usd(get(mo,a,"c")):"—"));
+    A.forEach(a=>html+=rowA(a, get(mo,a,"c")?usd(get(mo,a,"c")):"—"));
     const prev=i>0?sum(D[i-1],"c"):0;
     if(prev) html+=row("vs mes anterior",(sum(mo,"c")/prev-1>=0?"+":"")+pct(sum(mo,"c")/prev-1));
     bind(hit,html);
@@ -434,19 +457,20 @@ function notes(){
 function render(){
   bars("c-cost","c", v=>"$"+Math.round(v), mo=>{
     let h=`<b>${mo.m} 2026</b>`;
-    act().forEach(a=>{ const v=get(mo,a,"c"); if(v) h+=row(a,usd(v)); });
+    act().forEach(a=>{ const v=get(mo,a,"c"); if(v) h+=rowA(a,usd(v)); });
     h+=row("Total",usd(sum(mo,"c")));
     h+=row("Tokens",M(sum(mo,"in")+sum(mo,"out")));
     return h;
   });
   bars("c-tok", "tk", v=>M(v), mo=>{
     let h=`<b>${mo.m} 2026</b>`;
-    act().forEach(a=>{ const v=get(mo,a,"in")+get(mo,a,"out"); if(v) h+=row(a,M(v)); });
+    act().forEach(a=>{ const v=get(mo,a,"in")+get(mo,a,"out"); if(v) h+=rowA(a,M(v)); });
     h+=row("Total",M(sum(mo,"in")+sum(mo,"out")));
     h+=row("Costo",usd(sum(mo,"c")));
     return h;
   });
   ioChart(); trend(); kpis(); facts(); table(); notes();
+  ['c-cost','c-tok','c-trend'].forEach(id=>legend('lg-'+id));
 }
 
 document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
@@ -460,32 +484,8 @@ document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>{
   render();
 });
 
-/* ── puerta de clave (AES-256-GCM + PBKDF2-SHA256, 200.000 it.) ──── */
-const deB64 = s => { const b=atob(s), a=new Uint8Array(b.length);
-  for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a; };
-async function abrir(clave){
-  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(clave),
-    "PBKDF2", false, ["deriveKey"]);
-  const k = await crypto.subtle.deriveKey(
-    {name:"PBKDF2", salt:deB64(CIFRADO.salt), iterations:CIFRADO.iter, hash:"SHA-256"},
-    base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
-  const plano = await crypto.subtle.decrypt({name:"AES-GCM", iv:deB64(CIFRADO.iv)}, k,
-    deB64(CIFRADO.ct));
-  return JSON.parse(new TextDecoder().decode(plano));
-}
-const pw=document.getElementById("pw"), err=document.getElementById("err");
-pw.addEventListener("keydown", async e=>{
-  if(e.key!=="Enter") return;
-  err.textContent="Abriendo…";
-  try{
-    D = await abrir(pw.value);
-    D.forEach(mo=>mo.ag.forEach(a=>a.tk=a.in+a.out));
-    document.getElementById("gate").remove();
-    document.getElementById("app").style.display="block";
-    render();
-  }catch(_){ err.textContent="Clave incorrecta"; pw.select(); }
-});
-pw.focus();
+D.forEach(mo=>mo.ag.forEach(a=>a.tk=a.in+a.out));
+render();
 </script>
 </body>
 </html>
