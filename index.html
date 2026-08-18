@@ -2,347 +2,228 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>Panel de proyectos publicados</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel de proyectos</title>
 <style>
-  :root{
-    --tinta:#14161a; --tinta-2:#4a5058; --tinta-3:#8a9199;
-    --linea:#e6e8ec; --linea-2:#f2f4f7; --papel:#ffffff; --papel-2:#fafbfc;
-    --acento:#1a6b5a; --acento-suave:#e8f2ef;
-    --alerta:#a8560f; --alerta-suave:#fdf3e7;
-    --muerto:#b02a2a; --muerto-suave:#fdeeee;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0; background:var(--papel); color:var(--tinta);
-    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    font-feature-settings:"kern" 1;
-  }
-  a{color:inherit}
-  .envoltorio{max-width:1080px; margin:0 auto; padding:0 24px}
+:root{ --bg:#fff; --fg:#16181a; --dim:#8b8d90; --line:#e8e8e6; --hov:#f7f7f5; --ojo:#b4463c; }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font:14px/1.5 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:56px 24px 96px}
 
-  /* ── puerta ── */
-  #puerta{
-    position:fixed; inset:0; background:var(--papel); z-index:50;
-    display:flex; align-items:center; justify-content:center; padding:24px;
-  }
-  #puerta .caja{width:100%; max-width:340px; text-align:center}
-  #puerta h1{
-    font-size:15px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--tinta-3); margin:0 0 28px;
-  }
-  #puerta .cerrojo{
-    width:34px; height:34px; margin:0 auto 22px; border-radius:50%;
-    border:1.5px solid var(--linea); display:grid; place-items:center;
-    font-size:15px; color:var(--tinta-3);
-  }
-  #puerta form{display:flex; flex-direction:column; gap:10px}
-  #puerta input{
-    width:100%; padding:12px 14px; font-size:16px; font-family:inherit;
-    border:1px solid var(--linea); border-radius:8px; background:var(--papel-2);
-    color:var(--tinta); text-align:center; letter-spacing:.08em;
-  }
-  #puerta input:focus{outline:none; border-color:var(--acento); background:var(--papel)}
-  #puerta button{
-    padding:12px 14px; font-size:15px; font-family:inherit; font-weight:600;
-    border:none; border-radius:8px; background:var(--tinta); color:#fff; cursor:pointer;
-  }
-  #puerta button:disabled{opacity:.5; cursor:default}
-  #aviso{min-height:20px; margin-top:14px; font-size:13.5px; color:var(--muerto)}
+/* puerta */
+#puerta{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;
+  justify-content:center;z-index:50}
+#puerta .c{width:260px;text-align:center}
+#puerta h1{font-size:15px;font-weight:600;margin:0 0 3px}
+#puerta p{font-size:12.5px;color:var(--dim);margin:0 0 18px}
+#puerta input{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:7px;
+  font:inherit;text-align:center}
+#puerta input:focus{outline:none;border-color:var(--fg)}
+#puerta .e{font-size:12px;color:var(--ojo);height:16px;margin-top:8px}
 
-  /* ── cabecera ── */
-  header.tapa{border-bottom:1px solid var(--linea); padding:46px 0 26px; margin-bottom:30px}
-  .sobretitulo{
-    font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--tinta-3); margin-bottom:10px;
-  }
-  h1.titular{font-size:31px; line-height:1.15; font-weight:650; letter-spacing:-.02em; margin:0 0 12px}
-  .bajada{font-size:15px; color:var(--tinta-2); margin:0; max-width:62ch}
+/* cabecera */
+h1.t{font-size:16px;font-weight:600;margin:0}
+.meta{font-size:12.5px;color:var(--dim);margin:3px 0 26px}
+.barra{display:flex;gap:10px;align-items:center;margin-bottom:6px;flex-wrap:wrap;
+  position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:10}
+#q{flex:1;min-width:180px;border:0;border-bottom:1px solid var(--line);padding:6px 2px;
+  font:inherit;background:transparent;color:var(--fg)}
+#q:focus{outline:none;border-bottom-color:var(--fg)}
+.f{border:0;background:transparent;color:var(--dim);font:inherit;font-size:12.5px;
+  cursor:pointer;padding:4px 2px}
+.f:hover{color:var(--fg)}
+.f[aria-pressed="true"]{color:var(--fg);font-weight:600}
 
-  /* ── cifras ── */
-  .cifras{display:flex; flex-wrap:wrap; gap:0; margin:26px 0 0; border-top:1px solid var(--linea-2); padding-top:18px}
-  .cifra{padding-right:34px; margin-right:34px; border-right:1px solid var(--linea-2)}
-  .cifra:last-child{border-right:none; margin-right:0; padding-right:0}
-  .cifra b{display:block; font-size:25px; font-weight:650; letter-spacing:-.02em; line-height:1.1}
-  .cifra span{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--tinta-3)}
+/* grupos */
+.g{margin-top:34px}
+.g h2{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim);margin:0 0 2px;display:flex;justify-content:space-between}
+.g h2 span{font-weight:400}
 
-  /* ── controles ── */
-  .controles{
-    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
-    padding:16px 0; border-bottom:1px solid var(--linea);
-    position:sticky; top:0; background:var(--papel); z-index:10;
-  }
-  #buscar{
-    flex:1 1 210px; min-width:180px; padding:9px 13px; font-size:14.5px; font-family:inherit;
-    border:1px solid var(--linea); border-radius:7px; background:var(--papel-2); color:var(--tinta);
-  }
-  #buscar:focus{outline:none; border-color:var(--acento); background:var(--papel)}
-  .filtro{
-    padding:8px 13px; font-size:13px; font-family:inherit; font-weight:500;
-    border:1px solid var(--linea); border-radius:99px; background:var(--papel);
-    color:var(--tinta-2); cursor:pointer; white-space:nowrap;
-  }
-  .filtro:hover{border-color:var(--tinta-3)}
-  .filtro[aria-pressed="true"]{background:var(--tinta); border-color:var(--tinta); color:#fff}
-
-  /* ── grupos ── */
-  .grupo{margin:36px 0 0}
-  .grupo > h2{
-    font-size:12px; font-weight:650; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--tinta-3); margin:0 0 2px; padding-bottom:10px; border-bottom:1px solid var(--linea);
-    display:flex; justify-content:space-between; align-items:baseline; gap:12px;
-  }
-  .grupo > h2 em{font-style:normal; font-weight:500; letter-spacing:0; text-transform:none; font-size:12.5px}
-
-  .ficha{
-    display:block; text-decoration:none; padding:18px 2px 17px;
-    border-bottom:1px solid var(--linea-2);
-  }
-  .ficha:hover{background:var(--papel-2)}
-  .ficha[data-sinlink]{cursor:default}
-  .fila-1{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
-  .ficha h3{font-size:16.5px; font-weight:600; margin:0; letter-spacing:-.01em}
-  .ficha:hover h3{color:var(--acento)}
-  .ficha[data-sinlink]:hover h3{color:inherit}
-  .ficha p{margin:6px 0 0; font-size:14.5px; color:var(--tinta-2); max-width:78ch}
-  .url{
-    display:block; margin:8px 0 0; font-size:12.5px; color:var(--tinta-3);
-    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-all;
-  }
-  .ficha:hover .url{color:var(--acento)}
-  .pie{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; font-size:12px; color:var(--tinta-3)}
-  .pie code{font-family:ui-monospace,Menlo,monospace; font-size:11.5px}
-
-  .marca{
-    font-size:10.5px; font-weight:650; letter-spacing:.09em; text-transform:uppercase;
-    padding:3px 8px; border-radius:4px; white-space:nowrap;
-  }
-  .m-publico{background:var(--acento-suave); color:var(--acento)}
-  .m-clave{background:var(--linea-2); color:var(--tinta-2)}
-  .m-repo{background:var(--linea-2); color:var(--tinta-3)}
-  .m-caido,.m-pendiente{background:var(--muerto-suave); color:var(--muerto)}
-  .m-local{background:transparent; color:var(--tinta-3); border:1px solid var(--linea)}
-
-  .alerta{
-    margin-top:10px; padding:9px 12px; border-radius:7px; background:var(--alerta-suave);
-    border-left:2.5px solid var(--alerta); font-size:13.5px; color:var(--alerta);
-  }
-  .llave{
-    margin-top:10px; padding:9px 12px; border-radius:7px; background:var(--papel-2);
-    border:1px solid var(--linea); font-size:13px; color:var(--tinta-2);
-  }
-  .llave code{font-family:ui-monospace,Menlo,monospace; background:var(--linea-2); padding:2px 6px; border-radius:4px; color:var(--tinta)}
-
-  #vacio{padding:56px 0; text-align:center; color:var(--tinta-3); font-size:15px; display:none}
-  footer{margin:56px 0 40px; padding-top:20px; border-top:1px solid var(--linea); font-size:12.5px; color:var(--tinta-3)}
-  .oculto{display:none !important}
-  @media (max-width:640px){
-    h1.titular{font-size:25px}
-    .cifra{padding-right:20px; margin-right:20px}
-    .cifra b{font-size:21px}
-    .envoltorio{padding:0 18px}
-  }
-  @media print{
-    #puerta,.controles{display:none !important}
-    .ficha{break-inside:avoid}
-  }
+/* filas */
+.it{border-bottom:1px solid var(--line);padding:13px 0;cursor:pointer}
+.it:hover{background:var(--hov);box-shadow:-10px 0 0 var(--hov),10px 0 0 var(--hov)}
+.r1{display:flex;align-items:baseline;gap:12px}
+.nm{font-weight:500;text-decoration:none;color:var(--fg);flex:1}
+.nm:hover{text-decoration:underline}
+.it.mudo .nm{color:var(--dim)}
+.fe{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.d1{font-size:12.5px;color:var(--dim);margin-top:2px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.it.ab .d1{white-space:normal}
+.pt{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ojo);
+  margin-left:6px;vertical-align:2px}
+.det{display:none;margin-top:10px;font-size:12.5px;color:var(--dim);line-height:1.7}
+.it.ab .det{display:block}
+.det div{display:flex;gap:10px}
+.det b{font-weight:400;color:var(--dim);min-width:74px}
+.det span{color:var(--fg);word-break:break-all}
+.det .al{color:var(--ojo)}
+.det button{border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;
+  font-size:12px;border-radius:6px;padding:3px 10px;cursor:pointer;margin-top:8px}
+.det button:hover{border-color:var(--fg)}
+.oculto{display:none}
+#vacio{color:var(--dim);font-size:13px;padding:30px 0;display:none}
 </style>
 </head>
 <body>
 
-<div id="puerta">
-  <div class="caja">
-    <div class="cerrojo">&#9679;</div>
-    <h1>Panel de proyectos</h1>
-    <form id="formulario">
-      <input id="clave" type="password" placeholder="Clave" autocomplete="current-password" autofocus>
-      <button id="entrar" type="submit">Entrar</button>
-    </form>
-    <div id="aviso"></div>
+<div id="puerta"><div class="c">
+  <h1>Panel de proyectos</h1>
+  <p>Todo lo que tengo publicado.</p>
+  <input id="pw" type="password" placeholder="Clave" autocomplete="off" autofocus>
+  <div class="e" id="e"></div>
+</div></div>
+
+<div class="wrap" id="app" hidden>
+  <h1 class="t">Panel de proyectos</h1>
+  <div class="meta" id="meta"></div>
+
+  <div class="barra">
+    <input id="q" placeholder="Buscar…">
+    <button class="f" data-f="todos" aria-pressed="true">Todos</button>
+    <button class="f" data-f="vivos" aria-pressed="false">Con URL</button>
+    <button class="f" data-f="publico" aria-pressed="false">Abiertos</button>
+    <button class="f" data-f="clave" aria-pressed="false">Con clave</button>
+    <button class="f" data-f="atencion" aria-pressed="false">Ojo</button>
   </div>
+
+  <div id="lista"></div>
+  <div id="vacio">Nada calza con eso.</div>
 </div>
-
-<main id="panel" class="oculto">
-  <div class="envoltorio">
-    <header class="tapa">
-      <div class="sobretitulo">Fabián Martínez · inventario</div>
-      <h1 class="titular">Todo lo que tengo publicado, en una sola página</h1>
-      <p class="bajada">Cada URL viva, cada repo, cada sitio caído y cada proyecto que todavía no sale de mi computador. Ordenado para que no se me pierda nada.</p>
-      <div class="cifras" id="cifras"></div>
-    </header>
-
-    <div class="controles">
-      <input id="buscar" type="search" placeholder="Buscar proyecto, URL o carpeta…" autocomplete="off">
-      <button class="filtro" data-f="todos" aria-pressed="true">Todos</button>
-      <button class="filtro" data-f="vivos" aria-pressed="false">Con URL viva</button>
-      <button class="filtro" data-f="publico" aria-pressed="false">Abiertos</button>
-      <button class="filtro" data-f="clave" aria-pressed="false">Con clave</button>
-      <button class="filtro" data-f="atencion" aria-pressed="false">Requieren atención</button>
-    </div>
-
-    <div id="lista"></div>
-    <div id="vacio">Nada calza con eso.</div>
-
-    <footer>
-      <span id="corte"></span> · Fuente: carpeta <code>Claude 2</code> + GitHub <code>fabmarti15</code> (22 repos) + Firebase + hosting ChatGPT.
-    </footer>
-  </div>
-</main>
 
 <script src="datos.js"></script>
 <script>
 (function(){
-  "use strict";
+"use strict";
+var ETIQ={publico:"Abierto",clave:"Con clave",repo:"Solo repo",caido:"Caído",
+  pendiente:"Sin publicar",local:"Solo local"};
+var VIVOS={publico:1,clave:1,repo:1};
+var datos=null, filtro="todos";
 
-  var ETIQUETAS = {
-    publico:   "Abierto",
-    clave:     "Con clave",
-    repo:      "Solo repo",
-    caido:     "Caído",
-    pendiente: "Sin publicar",
-    local:     "Solo local"
-  };
-  var VIVOS = {publico:1, clave:1, repo:1};
-  var datos = null, filtro = "todos";
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};
+var corta=function(u){return u.replace(/^https?:\/\//,"").replace(/\/$/,"");};
 
-  /* ── descifrado ── */
-  function deB64(s){
-    var bin = atob(s), a = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
-    return a;
+/* ── descifrado ── */
+function deB64(s){var b=atob(s),a=new Uint8Array(b.length);
+  for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function abrir(clave,s){
+  return crypto.subtle.importKey("raw",new TextEncoder().encode(clave),"PBKDF2",false,["deriveKey"])
+    .then(function(base){return crypto.subtle.deriveKey(
+      {name:"PBKDF2",salt:deB64(s.salt),iterations:s.iter,hash:"SHA-256"},
+      base,{name:"AES-GCM",length:256},false,["decrypt"]);})
+    .then(function(k){return crypto.subtle.decrypt({name:"AES-GCM",iv:deB64(s.iv)},k,deB64(s.ct));})
+    .then(function(b){return JSON.parse(new TextDecoder().decode(b));});
+}
+
+/* ── render ── */
+function fila(it){
+  var viva=!!it.u;
+  var busca=esc([it.t,it.d,it.u,it.c,ETIQ[it.a]].join(" ").toLowerCase());
+  var nom=viva
+    ? '<a class="nm" href="'+esc(it.u)+'" target="_blank" rel="noopener">'+esc(it.t)+'</a>'
+    : '<span class="nm">'+esc(it.t)+'</span>';
+
+  var d=[];
+  d.push('<div><b>Estado</b><span>'+ETIQ[it.a]+'</span></div>');
+  if(viva) d.push('<div><b>URL</b><span>'+esc(corta(it.u))+'</span></div>');
+  if(it.r&&it.r!==it.u) d.push('<div><b>Repo</b><span>'+esc(corta(it.r))+'</span></div>');
+  if(it.c) d.push('<div><b>Carpeta</b><span>'+esc(it.c)+'</span></div>');
+  if(it.pass) d.push('<div><b>Clave</b><span>'+esc(it.pass)+'</span></div>');
+  if(it.alerta) d.push('<div><b>Ojo</b><span class="al">'+esc(it.alerta)+'</span></div>');
+  if(viva) d.push('<button type="button" class="cp">Copiar URL</button>');
+
+  return '<div class="it'+(viva?'':' mudo')+'" data-b="'+busca+'" data-a="'+it.a+'"'+
+    (it.alerta?' data-oj="1"':'')+(viva&&VIVOS[it.a]?' data-v="1"':'')+
+    (viva?' data-u="'+esc(it.u)+'"':'')+'>'+
+    '<div class="r1">'+nom+(it.alerta?'<i class="pt"></i>':'')+
+      '<span class="fe">'+esc(it.f||"")+'</span></div>'+
+    (it.d?'<div class="d1">'+esc(it.d)+'</div>':'')+
+    '<div class="det">'+d.join("")+'</div></div>';
+}
+
+function pinta(){
+  var n=0; datos.grupos.forEach(function(g){n+=g.items.length;});
+  document.getElementById("meta").textContent=n+" proyectos · corte "+datos.corte;
+  document.getElementById("lista").innerHTML=datos.grupos.map(function(g){
+    return '<section class="g" data-g><h2>'+esc(g.nombre)+
+      '<span class="n">'+g.items.length+'</span></h2>'+
+      g.items.map(fila).join("")+'</section>';
+  }).join("");
+  aplica();
+}
+
+function aplica(){
+  var q=document.getElementById("q").value.trim().toLowerCase(), v=0;
+  [].forEach.call(document.querySelectorAll(".it"),function(el){
+    var ok=!q||el.dataset.b.indexOf(q)!==-1;
+    if(ok){
+      var a=el.dataset.a;
+      if(filtro==="vivos")    ok=el.dataset.v==="1";
+      if(filtro==="publico")  ok=a==="publico";
+      if(filtro==="clave")    ok=a==="clave";
+      if(filtro==="atencion") ok=el.dataset.oj==="1";
+    }
+    el.classList.toggle("oculto",!ok); if(ok)v++;
+  });
+  [].forEach.call(document.querySelectorAll("[data-g]"),function(g){
+    var c=g.querySelectorAll(".it:not(.oculto)").length;
+    g.classList.toggle("oculto",!c);
+    g.querySelector(".n").textContent=c;
+  });
+  document.getElementById("vacio").style.display=v?"none":"block";
+}
+
+/* ── eventos ── */
+document.addEventListener("click",function(e){
+  var cp=e.target.closest(".cp");
+  if(cp){
+    e.stopPropagation();
+    var u=cp.closest(".it").dataset.u;
+    var ok=function(){cp.textContent="Copiado";
+      setTimeout(function(){cp.textContent="Copiar URL";},1300);};
+    if(navigator.clipboard) navigator.clipboard.writeText(u).then(ok,function(){}); else ok();
+    return;
   }
-  function abrir(clave, sobre){
-    var cod = new TextEncoder();
-    return crypto.subtle.importKey("raw", cod.encode(clave), "PBKDF2", false, ["deriveKey"])
-      .then(function(base){
-        return crypto.subtle.deriveKey(
-          {name:"PBKDF2", salt:deB64(sobre.salt), iterations:sobre.iter, hash:"SHA-256"},
-          base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
-      })
-      .then(function(k){
-        return crypto.subtle.decrypt({name:"AES-GCM", iv:deB64(sobre.iv)}, k, deB64(sobre.ct));
-      })
-      .then(function(buf){ return JSON.parse(new TextDecoder().decode(buf)); });
-  }
+  if(e.target.closest(".nm[href]")) return;      /* el nombre abre la URL */
+  var it=e.target.closest(".it");
+  if(it) it.classList.toggle("ab");
+});
 
-  /* ── render ── */
-  function esc(s){
-    return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
-    });
-  }
-  function urlCorta(u){ return u.replace(/^https?:\/\//, "").replace(/\/$/, ""); }
+document.addEventListener("keydown",function(e){
+  var q=document.getElementById("q");
+  if(document.getElementById("puerta")) return;
+  if(e.key==="/"&&document.activeElement!==q){e.preventDefault();q.focus();}
+  if(e.key==="Escape"&&document.activeElement===q){q.value="";aplica();q.blur();}
+});
 
-  function pinta(){
-    var todos = [];
-    datos.grupos.forEach(function(g){ g.items.forEach(function(it){ todos.push(it); }); });
-
-    var conUrl = todos.filter(function(i){ return i.u && VIVOS[i.a]; });
-    var atencion = todos.filter(function(i){ return i.alerta; });
-    var web = todos.filter(function(i){ return VIVOS[i.a] && i.a !== "repo"; });
-
-    document.getElementById("cifras").innerHTML =
-      cifra(conUrl.length, "URLs activas") +
-      cifra(web.length, "sitios web") +
-      cifra(todos.filter(function(i){ return i.a === "clave"; }).length, "con clave") +
-      cifra(atencion.length, "por revisar") +
-      cifra(todos.length, "proyectos en total");
-
-    document.getElementById("corte").textContent = "Corte " + datos.corte;
-
-    var html = datos.grupos.map(function(g){
-      var fichas = g.items.map(ficha).join("");
-      return '<section class="grupo" data-grupo>' +
-        '<h2><span>' + esc(g.nombre) + '</span><em>' + g.items.length + '</em></h2>' +
-        fichas + '</section>';
-    }).join("");
-    document.getElementById("lista").innerHTML = html;
+document.getElementById("q").addEventListener("input",aplica);
+[].forEach.call(document.querySelectorAll(".f"),function(b){
+  b.addEventListener("click",function(e){
+    e.stopPropagation();
+    filtro=b.dataset.f;
+    [].forEach.call(document.querySelectorAll(".f"),function(o){
+      o.setAttribute("aria-pressed",String(o===b));});
     aplica();
-  }
-  function cifra(n, t){ return '<div class="cifra"><b>' + n + '</b><span>' + t + '</span></div>'; }
-
-  function ficha(it){
-    var tag = '<span class="marca m-' + it.a + '">' + ETIQUETAS[it.a] + '</span>';
-    var cuerpo =
-      '<div class="fila-1"><h3>' + esc(it.t) + '</h3>' + tag + '</div>' +
-      (it.d ? '<p>' + esc(it.d) + '</p>' : '') +
-      (it.u ? '<span class="url">' + esc(urlCorta(it.u)) + '</span>' : '') +
-      (it.pass ? '<div class="llave">Clave del sitio: <code>' + esc(it.pass) + '</code></div>' : '') +
-      (it.alerta ? '<div class="alerta">' + esc(it.alerta) + '</div>' : '') +
-      pie(it);
-
-    var busca = esc([it.t, it.d, it.u, it.c, ETIQUETAS[it.a]].join(" ").toLowerCase());
-    var attrs = ' class="ficha" data-buscar="' + busca + '" data-acceso="' + it.a + '"' +
-                (it.alerta ? ' data-atencion="1"' : '') +
-                (it.u && VIVOS[it.a] ? ' data-vivo="1"' : '');
-
-    return it.u
-      ? '<a href="' + esc(it.u) + '" target="_blank" rel="noopener"' + attrs + '>' + cuerpo + '</a>'
-      : '<div' + attrs + ' data-sinlink>' + cuerpo + '</div>';
-  }
-  function pie(it){
-    var p = [];
-    if (it.f) p.push("Últ. cambio " + esc(it.f));
-    if (it.c) p.push("<code>" + esc(it.c) + "</code>");
-    if (it.r && it.r !== it.u) p.push("repo: <code>" + esc(urlCorta(it.r)) + "</code>");
-    return p.length ? '<div class="pie">' + p.join("<span></span>") + '</div>' : "";
-  }
-
-  /* ── filtros ── */
-  function aplica(){
-    var q = document.getElementById("buscar").value.trim().toLowerCase();
-    var vistas = 0;
-    [].forEach.call(document.querySelectorAll(".ficha"), function(el){
-      var ok = true;
-      if (q && el.dataset.buscar.indexOf(q) === -1) ok = false;
-      if (ok) {
-        var a = el.dataset.acceso;
-        if (filtro === "vivos")    ok = el.dataset.vivo === "1";
-        if (filtro === "publico")  ok = a === "publico";
-        if (filtro === "clave")    ok = a === "clave";
-        if (filtro === "atencion") ok = el.dataset.atencion === "1";
-      }
-      el.classList.toggle("oculto", !ok);
-      if (ok) vistas++;
-    });
-    [].forEach.call(document.querySelectorAll("[data-grupo]"), function(g){
-      g.classList.toggle("oculto", !g.querySelector(".ficha:not(.oculto)"));
-    });
-    document.getElementById("vacio").style.display = vistas ? "none" : "block";
-  }
-
-  document.getElementById("buscar").addEventListener("input", aplica);
-  [].forEach.call(document.querySelectorAll(".filtro"), function(b){
-    b.addEventListener("click", function(){
-      filtro = b.dataset.f;
-      [].forEach.call(document.querySelectorAll(".filtro"), function(o){
-        o.setAttribute("aria-pressed", String(o === b));
-      });
-      aplica();
-    });
   });
+});
 
-  /* ── puerta ── */
-  var aviso = document.getElementById("aviso"), boton = document.getElementById("entrar");
-  document.getElementById("formulario").addEventListener("submit", function(e){
-    e.preventDefault();
-    var clave = document.getElementById("clave").value;
-    if (!clave) return;
-    if (!window.PANEL_DATOS) { aviso.textContent = "Falta datos.js — corre cifrar.py."; return; }
-    boton.disabled = true; boton.textContent = "Abriendo…"; aviso.textContent = "";
-    abrir(clave, window.PANEL_DATOS).then(function(d){
-      datos = d;
-      document.getElementById("puerta").remove();
-      document.getElementById("panel").classList.remove("oculto");
-      pinta();
-    }).catch(function(){
-      aviso.textContent = "Clave incorrecta.";
-      boton.disabled = false; boton.textContent = "Entrar";
-      document.getElementById("clave").select();
-    });
-  });
+var pw=document.getElementById("pw"), er=document.getElementById("e");
+pw.addEventListener("keydown",function(ev){
+  if(ev.key!=="Enter") return;
+  er.textContent="Abriendo…";
+  abrir(pw.value,window.PANEL_DATOS).then(function(d){
+    datos=d;
+    document.getElementById("puerta").remove();
+    document.getElementById("app").hidden=false;
+    pinta();
+  },function(){ er.textContent="Clave incorrecta"; pw.select(); });
+});
+pw.focus();
 })();
 </script>
 </body>

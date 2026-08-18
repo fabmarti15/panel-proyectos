@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light only">
+<title>Panel de proyectos publicados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#FBFAF7; --papel-2:#FFFFFF;
+  --tinta:#1E1C19; --tinta-2:#5C5850; --tinta-3:#928C81;
+  --linea:#E4E0D6; --linea-2:#EFECE4;
+  --sombra: 0 1px 2px rgba(30,28,25,.04), 0 8px 24px -12px rgba(30,28,25,.10);
+  --sombra-alta: 0 2px 4px rgba(30,28,25,.05), 0 18px 40px -16px rgba(30,28,25,.18);
+  --radio:18px;
+  --display:"Fraunces",Georgia,serif;
+  --ui:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  /* pasteles por categoría */
+  --c0-bg:#E3F1E7; --c0-bd:#C3E0CB; --c0-ac:#2C6B4C;
+  --c1-bg:#E1EAF8; --c1-bd:#C2D6F0; --c1-ac:#2B5687;
+  --c2-bg:#FAF0D7; --c2-bd:#EDDDB0; --c2-ac:#8A6414;
+  --c3-bg:#EBE4F7; --c3-bd:#D6CBEE; --c3-ac:#5B4694;
+  --c4-bg:#FCE7DC; --c4-bd:#F2D0BE; --c4-ac:#9A5230;
+  --c5-bg:#FBE3EC; --c5-bd:#F1C9D8; --c5-ac:#8E3F5F;
+  --c6-bg:#EAF0E2; --c6-bd:#D3DFC6; --c6-ac:#54703C;
+  --c7-bg:#FBE2DE; --c7-bd:#F0C6BF; --c7-ac:#9E3B2E;
+  --c8-bg:#EFEDE7; --c8-bd:#DFDBD1; --c8-ac:#6A665F;
+  --c9-bg:#DFF0F2; --c9-bd:#BFDFE4; --c9-ac:#256670;
+  --c10-bg:#F3E9DE; --c10-bd:#E3D2BF; --c10-ac:#7A5A34;
+  --c11-bg:#E7E9F6; --c11-bd:#CDD1EC; --c11-ac:#464C87;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font:16px/1.55 var(--ui); font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+}
+/* grano */
+body::before{
+  content:""; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+}
+.env{max-width:1240px; margin:0 auto; padding:0 clamp(18px,4vw,44px); position:relative; z-index:2}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--tinta); outline-offset:3px; border-radius:4px}
+
+/* ────────── puerta ────────── */
+#puerta{
+  position:fixed; inset:0; z-index:60; display:grid; place-items:center; padding:24px;
+  background:
+    radial-gradient(120% 90% at 12% 8%, #E9F2EA 0%, transparent 55%),
+    radial-gradient(110% 80% at 88% 92%, #F3E9F7 0%, transparent 58%),
+    radial-gradient(90% 70% at 78% 12%, #FBF0D9 0%, transparent 60%),
+    var(--papel);
+}
+#puerta .caja{width:100%; max-width:380px; text-align:center; position:relative; z-index:2}
+#puerta .aro{
+  width:60px; height:60px; margin:0 auto 26px; border-radius:50%;
+  background:var(--papel-2); border:1px solid var(--linea);
+  box-shadow:var(--sombra); display:grid; place-items:center;
+}
+#puerta .aro i{display:block; width:11px; height:11px; border-radius:50%; background:var(--tinta); animation:latir 2.6s ease-in-out infinite}
+@keyframes latir{0%,100%{transform:scale(1); opacity:1} 50%{transform:scale(.75); opacity:.5}}
+#puerta h1{
+  font-family:var(--display); font-size:30px; font-weight:600; font-variation-settings:"opsz" 40;
+  letter-spacing:-.02em; margin:0 0 6px;
+}
+#puerta p{margin:0 0 26px; font-size:14.5px; color:var(--tinta-2)}
+#puerta form{display:flex; flex-direction:column; gap:9px}
+#puerta input{
+  width:100%; padding:14px 16px; font:16px/1 var(--ui); letter-spacing:.14em;
+  border:1px solid var(--linea); border-radius:12px; background:var(--papel-2);
+  color:var(--tinta); text-align:center; box-shadow:var(--sombra); transition:border-color .18s;
+}
+#puerta input::placeholder{letter-spacing:.04em; color:var(--tinta-3)}
+#puerta input:focus{outline:none; border-color:var(--tinta-2)}
+#puerta button{
+  padding:14px 16px; font:600 15px/1 var(--ui); letter-spacing:.01em;
+  border:none; border-radius:12px; background:var(--tinta); color:#FBFAF7; cursor:pointer;
+  transition:transform .16s, opacity .16s; box-shadow:var(--sombra);
+}
+#puerta button:hover:not(:disabled){transform:translateY(-1px)}
+#puerta button:disabled{opacity:.45; cursor:default}
+#aviso{min-height:22px; margin-top:14px; font-size:13.5px; color:#9E3B2E; font-weight:500}
+.temblor{animation:temblor .34s}
+@keyframes temblor{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+/* ────────── cabecera ────────── */
+.tapa{padding:clamp(40px,7vw,76px) 0 30px}
+.kicker{
+  font:600 11px/1 var(--ui); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--tinta-3); margin-bottom:18px;
+}
+.tapa h1{
+  font-family:var(--display); font-weight:500; font-variation-settings:"opsz" 130;
+  font-size:clamp(38px,6.4vw,74px); line-height:.98; letter-spacing:-.035em;
+  margin:0 0 20px; max-width:20ch;
+}
+.tapa h1 em{font-style:italic; font-weight:400; color:var(--tinta-2)}
+.tapa .bajada{margin:0; font-size:clamp(15px,1.4vw,17.5px); color:var(--tinta-2); max-width:56ch}
+
+.stats{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:1px;
+  margin-top:clamp(30px,4vw,46px); background:var(--linea);
+  border:1px solid var(--linea); border-radius:var(--radio); overflow:hidden;
+}
+.stat{background:var(--papel-2); padding:18px 20px 16px}
+.stat b{
+  display:block; font-family:var(--display); font-weight:600; font-variation-settings:"opsz" 60;
+  font-size:clamp(26px,3vw,36px); line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+}
+.stat span{display:block; margin-top:7px; font:500 10.5px/1.3 var(--ui); letter-spacing:.13em; text-transform:uppercase; color:var(--tinta-3)}
+
+/* ────────── barra ────────── */
+.barra{
+  position:sticky; top:0; z-index:20; margin-top:34px;
+  padding:14px 0 13px; background:rgba(251,250,247,.86);
+  backdrop-filter:blur(14px) saturate(1.4); -webkit-backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--linea);
+}
+.barra-fila{display:flex; gap:9px; align-items:center; flex-wrap:wrap}
+.campo{position:relative; flex:1 1 250px; min-width:210px}
+.campo svg{position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--tinta-3); pointer-events:none}
+#buscar{
+  width:100%; padding:11px 46px 11px 40px; font:15px/1 var(--ui);
+  border:1px solid var(--linea); border-radius:11px; background:var(--papel-2); color:var(--tinta);
+  transition:border-color .18s, box-shadow .18s;
+}
+#buscar::placeholder{color:var(--tinta-3)}
+#buscar:focus{outline:none; border-color:var(--tinta-2); box-shadow:var(--sombra)}
+.atajo{
+  position:absolute; right:11px; top:50%; transform:translateY(-50%);
+  font:500 11px/1 var(--mono); color:var(--tinta-3); border:1px solid var(--linea);
+  border-radius:5px; padding:4px 6px; background:var(--papel); pointer-events:none;
+}
+#buscar:focus ~ .atajo, #buscar:not(:placeholder-shown) ~ .atajo{opacity:0}
+.pill{
+  padding:10px 15px; font:500 13.5px/1 var(--ui); white-space:nowrap;
+  border:1px solid var(--linea); border-radius:99px; background:var(--papel-2);
+  color:var(--tinta-2); cursor:pointer; transition:.18s;
+}
+.pill:hover{border-color:var(--tinta-3); color:var(--tinta)}
+.pill[aria-pressed="true"]{background:var(--tinta); border-color:var(--tinta); color:#FBFAF7}
+.pill.ojo[aria-pressed="true"]{background:#9E3B2E; border-color:#9E3B2E}
+
+.saltos{display:flex; gap:7px; overflow-x:auto; padding:11px 0 2px; scrollbar-width:none}
+.saltos::-webkit-scrollbar{display:none}
+.salto{
+  display:inline-flex; align-items:center; gap:7px; flex:0 0 auto; text-decoration:none;
+  padding:7px 12px; border-radius:99px; font:500 12.5px/1 var(--ui); color:var(--tinta-2);
+  border:1px solid transparent; transition:.18s;
+}
+.salto:hover{border-color:var(--linea); background:var(--papel-2); color:var(--tinta)}
+.salto i{width:8px; height:8px; border-radius:50%; background:var(--ac); flex:0 0 auto}
+.salto b{font-weight:500; color:var(--tinta-3); font-variant-numeric:tabular-nums}
+
+/* ────────── grupos ────────── */
+.grupo{margin-top:clamp(44px,6vw,72px); scroll-margin-top:130px}
+.grupo-tapa{display:flex; align-items:baseline; gap:14px; margin-bottom:20px}
+.grupo-tapa i{width:11px; height:11px; border-radius:50%; background:var(--ac); flex:0 0 auto; align-self:center}
+.grupo-tapa h2{
+  font-family:var(--display); font-size:clamp(21px,2.4vw,27px); font-weight:600;
+  font-variation-settings:"opsz" 40; letter-spacing:-.02em; margin:0;
+}
+.grupo-tapa .n{
+  margin-left:auto; font:500 11.5px/1 var(--mono); color:var(--tinta-3);
+  border:1px solid var(--linea); border-radius:99px; padding:5px 10px; align-self:center;
+}
+.rejilla{display:grid; grid-template-columns:repeat(auto-fill,minmax(322px,1fr)); gap:14px}
+
+/* ────────── ficha ────────── */
+.ficha{
+  position:relative; display:flex; flex-direction:column; gap:9px;
+  padding:20px 20px 17px; border-radius:var(--radio);
+  background:var(--bg); border:1px solid var(--bd);
+  transition:transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s, border-color .22s;
+  animation:surgir .5s cubic-bezier(.2,.7,.3,1) backwards; animation-delay:var(--d,0ms);
+}
+@keyframes surgir{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
+.ficha.viva{cursor:pointer}
+.ficha.viva:hover{transform:translateY(-3px); box-shadow:var(--sombra-alta); border-color:var(--ac)}
+.ficha.inerte{background:var(--papel-2); border-color:var(--linea); border-style:dashed}
+
+.f-top{display:flex; align-items:flex-start; gap:10px}
+.ficha h3{
+  margin:0; font:600 17px/1.28 var(--ui); letter-spacing:-.012em; flex:1;
+}
+.ficha h3 a{text-decoration:none; color:inherit}
+.ficha h3 a::after{content:""; position:absolute; inset:0; border-radius:var(--radio)}
+.ficha.viva:hover h3{color:var(--ac)}
+.flecha{
+  flex:0 0 auto; width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+  color:var(--ac); background:rgba(255,255,255,.62); opacity:0; transform:translate(-3px,3px);
+  transition:.22s;
+}
+.ficha.viva:hover .flecha{opacity:1; transform:none}
+
+.ficha p{margin:0; font-size:14px; line-height:1.5; color:var(--tinta-2)}
+.enlace{
+  font:400 12px/1.4 var(--mono); color:var(--ac); opacity:.78;
+  word-break:break-all; letter-spacing:-.01em;
+}
+.ficha.inerte .enlace{color:var(--tinta-3)}
+
+.chips{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.chip{
+  font:600 9.5px/1 var(--ui); letter-spacing:.11em; text-transform:uppercase;
+  padding:5px 8px; border-radius:5px; white-space:nowrap;
+  background:rgba(255,255,255,.72); color:var(--ac); border:1px solid var(--bd);
+}
+.ficha.inerte .chip{background:var(--papel); color:var(--tinta-3); border-color:var(--linea)}
+.chip.ojo{background:#9E3B2E; color:#fff; border-color:#9E3B2E}
+
+.nota{
+  display:flex; gap:8px; padding:9px 11px; border-radius:10px; background:rgba(255,255,255,.66);
+  border:1px solid var(--bd); font-size:12.8px; line-height:1.45; color:var(--tinta-2);
+}
+.nota::before{content:"!"; font:700 11px/1.35 var(--ui); color:#9E3B2E; flex:0 0 auto}
+.secreto{
+  display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--tinta-2);
+  padding:8px 11px; border-radius:10px; background:rgba(255,255,255,.66); border:1px solid var(--bd);
+}
+.secreto code{font:500 12px/1 var(--mono); background:var(--papel); padding:4px 7px; border-radius:5px; color:var(--tinta); border:1px solid var(--bd)}
+
+.f-pie{
+  margin-top:auto; padding-top:11px; border-top:1px solid var(--bd);
+  display:flex; flex-wrap:wrap; gap:5px 12px; align-items:center;
+  font:400 11.5px/1.4 var(--ui); color:var(--tinta-3);
+}
+.ficha.inerte .f-pie{border-top-color:var(--linea-2)}
+.f-pie code{font:400 11px/1.4 var(--mono)}
+.copiar{
+  position:relative; z-index:3; margin-left:auto; border:1px solid var(--bd); background:rgba(255,255,255,.7);
+  color:var(--tinta-2); font:500 11px/1 var(--ui); padding:6px 9px; border-radius:7px; cursor:pointer;
+  transition:.16s;
+}
+.copiar:hover{border-color:var(--ac); color:var(--ac)}
+.copiar.ok{background:var(--ac); color:#fff; border-color:var(--ac)}
+
+#vacio{display:none; padding:80px 0; text-align:center}
+#vacio b{display:block; font-family:var(--display); font-size:26px; font-weight:500; margin-bottom:8px; letter-spacing:-.02em}
+#vacio span{font-size:14.5px; color:var(--tinta-2)}
+
+.suelo{
+  margin:clamp(56px,8vw,96px) 0 48px; padding-top:22px; border-top:1px solid var(--linea);
+  display:flex; flex-wrap:wrap; gap:8px 20px; font-size:12.5px; color:var(--tinta-3);
+}
+.suelo code{font:400 11.5px/1 var(--mono)}
+.oculto{display:none !important}
+
+@media (max-width:560px){
+  .rejilla{grid-template-columns:1fr}
+  .tapa h1{letter-spacing:-.03em}
+  .barra{padding:11px 0 10px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s !important; transition-duration:.001s !important}
+  html{scroll-behavior:auto}
+}
+@media print{
+  #puerta,.barra,.copiar,.flecha,body::before{display:none !important}
+  .ficha{break-inside:avoid; box-shadow:none}
+  .rejilla{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="puerta">
+  <div class="caja">
+    <div class="aro"><i></i></div>
+    <h1>Panel de proyectos</h1>
+    <p>Todo lo que tengo publicado, en un solo lugar.</p>
+    <form id="formulario" autocomplete="off">
+      <input id="clave" type="password" placeholder="Clave" autocomplete="current-password" autofocus>
+      <button id="entrar" type="submit">Entrar</button>
+    </form>
+    <div id="aviso" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<main id="panel" class="oculto">
+  <div class="env">
+    <header class="tapa">
+      <div class="kicker">Fabián Martínez · inventario vivo</div>
+      <h1>Todo lo publicado, <em>en una sola página</em></h1>
+      <p class="bajada">Cada URL viva, cada repo, cada sitio caído y cada proyecto que todavía no sale del computador. Ordenado para que no se pierda nada.</p>
+      <div class="stats" id="stats"></div>
+    </header>
+  </div>
+
+  <div class="barra">
+    <div class="env">
+      <div class="barra-fila">
+        <div class="campo">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3 14 14"/></svg>
+          <input id="buscar" type="search" placeholder="Buscar proyecto, URL o carpeta…" autocomplete="off">
+          <span class="atajo">/</span>
+        </div>
+        <button class="pill" data-f="todos" aria-pressed="true">Todos</button>
+        <button class="pill" data-f="vivos" aria-pressed="false">Con URL viva</button>
+        <button class="pill" data-f="publico" aria-pressed="false">Abiertos</button>
+        <button class="pill" data-f="clave" aria-pressed="false">Con clave</button>
+        <button class="pill ojo" data-f="atencion" aria-pressed="false">Ojo acá</button>
+      </div>
+      <nav class="saltos" id="saltos" aria-label="Ir a categoría"></nav>
+    </div>
+  </div>
+
+  <div class="env">
+    <div id="lista"></div>
+    <div id="vacio"><b>Nada calza con eso</b><span>Prueba con otra palabra o vuelve a «Todos».</span></div>
+    <footer class="suelo">
+      <span id="corte"></span>
+      <span>Fuente: carpeta <code>Claude 2</code> · GitHub <code>fabmarti15</code> · Firebase · hosting ChatGPT</span>
+    </footer>
+  </div>
+</main>
+
+<script src="datos.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var ETIQ = {publico:"Abierto", clave:"Con clave", repo:"Solo repo", caido:"Caído", pendiente:"Sin publicar", local:"Solo local"};
+  var VIVOS = {publico:1, clave:1, repo:1};
+  var datos = null, filtro = "todos";
+
+  /* ── descifrado ── */
+  function deB64(s){ var b=atob(s), a=new Uint8Array(b.length); for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i); return a; }
+  function abrir(clave, s){
+    return crypto.subtle.importKey("raw", new TextEncoder().encode(clave), "PBKDF2", false, ["deriveKey"])
+      .then(function(base){
+        return crypto.subtle.deriveKey({name:"PBKDF2", salt:deB64(s.salt), iterations:s.iter, hash:"SHA-256"},
+          base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+      })
+      .then(function(k){ return crypto.subtle.decrypt({name:"AES-GCM", iv:deB64(s.iv)}, k, deB64(s.ct)); })
+      .then(function(buf){ return JSON.parse(new TextDecoder().decode(buf)); });
+  }
+
+  var esc = function(s){
+    return String(s==null?"":s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; });
+  };
+  var corta = function(u){ return u.replace(/^https?:\/\//,"").replace(/\/$/,""); };
+
+  /* ── render ── */
+  function pinta(){
+    var todos = [];
+    datos.grupos.forEach(function(g){ g.items.forEach(function(i){ todos.push(i); }); });
+    var n = function(f){ return todos.filter(f).length; };
+
+    document.getElementById("stats").innerHTML = [
+      [n(function(i){ return i.u && VIVOS[i.a]; }), "URLs activas"],
+      [n(function(i){ return VIVOS[i.a] && i.a!=="repo"; }), "sitios web"],
+      [n(function(i){ return i.a==="clave"; }), "con clave"],
+      [n(function(i){ return !!i.alerta; }), "por revisar"],
+      [todos.length, "proyectos"]
+    ].map(function(s){ return '<div class="stat"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join("");
+
+    document.getElementById("corte").textContent = "Corte "+datos.corte;
+
+    var PALETAS = 12;
+    function pal(k){ return k % PALETAS; }
+
+    document.getElementById("saltos").innerHTML = datos.grupos.map(function(g,k){
+      return '<a class="salto" href="#g'+k+'" style="--ac:var(--c'+pal(k)+'-ac)"><i></i>'+esc(g.nombre.split(" (")[0])+' <b>'+g.items.length+'</b></a>';
+    }).join("");
+
+    document.getElementById("lista").innerHTML = datos.grupos.map(function(g,k){
+      var v = '--ac:var(--c'+pal(k)+'-ac); --bg:var(--c'+pal(k)+'-bg); --bd:var(--c'+pal(k)+'-bd)';
+      return '<section class="grupo" id="g'+k+'" data-grupo style="'+v+'">'+
+        '<div class="grupo-tapa"><i></i><h2>'+esc(g.nombre)+'</h2><span class="n">'+g.items.length+'</span></div>'+
+        '<div class="rejilla">'+g.items.map(ficha).join("")+'</div></section>';
+    }).join("");
+
+    aplica();
+  }
+
+  function ficha(it, idx){
+    var viva = !!it.u, ac = viva ? "viva" : "inerte";
+    var busca = esc([it.t, it.d, it.u, it.c, ETIQ[it.a]].join(" ").toLowerCase());
+
+    var titulo = viva
+      ? '<h3><a href="'+esc(it.u)+'" target="_blank" rel="noopener">'+esc(it.t)+'</a></h3>'
+      : '<h3>'+esc(it.t)+'</h3>';
+
+    var flecha = viva ? '<span class="flecha" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9"/></svg></span>' : '';
+
+    return '<article class="ficha '+ac+'" style="--d:'+Math.min(idx,10)*40+'ms"'+
+      ' data-buscar="'+busca+'" data-acceso="'+it.a+'"'+
+      (it.alerta ? ' data-atencion="1"' : '')+
+      (viva && VIVOS[it.a] ? ' data-vivo="1"' : '')+
+      (viva ? ' data-url="'+esc(it.u)+'"' : '')+'>'+
+      '<div class="f-top">'+titulo+flecha+'</div>'+
+      '<div class="chips"><span class="chip">'+ETIQ[it.a]+'</span>'+
+        (it.alerta ? '<span class="chip ojo">Ojo</span>' : '')+'</div>'+
+      (it.d ? '<p>'+esc(it.d)+'</p>' : '')+
+      (viva ? '<div class="enlace">'+esc(corta(it.u))+'</div>' : '')+
+      (it.pass ? '<div class="secreto">Clave del sitio <code>'+esc(it.pass)+'</code></div>' : '')+
+      (it.alerta ? '<div class="nota">'+esc(it.alerta)+'</div>' : '')+
+      pie(it, viva)+
+    '</article>';
+  }
+
+  function pie(it, viva){
+    var p = [];
+    if (it.f) p.push(esc(it.f));
+    if (it.c) p.push('<code>'+esc(it.c)+'</code>');
+    if (it.r && it.r !== it.u) p.push('<code>'+esc(corta(it.r))+'</code>');
+    var btn = viva ? '<button class="copiar" type="button">Copiar</button>' : '';
+    if (!p.length && !btn) return '';
+    return '<div class="f-pie">'+p.join("")+btn+'</div>';
+  }
+
+  /* ── filtros ── */
+  function aplica(){
+    var q = document.getElementById("buscar").value.trim().toLowerCase(), vistas = 0;
+    [].forEach.call(document.querySelectorAll(".ficha"), function(el){
+      var ok = !q || el.dataset.buscar.indexOf(q) !== -1;
+      if (ok) {
+        var a = el.dataset.acceso;
+        if (filtro === "vivos")    ok = el.dataset.vivo === "1";
+        if (filtro === "publico")  ok = a === "publico";
+        if (filtro === "clave")    ok = a === "clave";
+        if (filtro === "atencion") ok = el.dataset.atencion === "1";
+      }
+      el.classList.toggle("oculto", !ok);
+      if (ok) vistas++;
+    });
+    [].forEach.call(document.querySelectorAll("[data-grupo]"), function(g){
+      var n = g.querySelectorAll(".ficha:not(.oculto)").length;
+      g.classList.toggle("oculto", !n);
+      g.querySelector(".n").textContent = n;
+    });
+    document.getElementById("vacio").style.display = vistas ? "none" : "block";
+  }
+
+  document.getElementById("buscar").addEventListener("input", aplica);
+  [].forEach.call(document.querySelectorAll(".pill"), function(b){
+    b.addEventListener("click", function(){
+      filtro = b.dataset.f;
+      [].forEach.call(document.querySelectorAll(".pill"), function(o){ o.setAttribute("aria-pressed", String(o===b)); });
+      aplica();
+    });
+  });
+  document.addEventListener("keydown", function(e){
+    var b = document.getElementById("buscar");
+    if (e.key === "/" && document.activeElement !== b && !document.getElementById("puerta")) { e.preventDefault(); b.focus(); }
+    if (e.key === "Escape" && document.activeElement === b) { b.value = ""; aplica(); b.blur(); }
+  });
+
+  /* copiar URL + click en la ficha */
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest(".copiar");
+    if (btn) {
+      e.preventDefault(); e.stopPropagation();
+      var u = btn.closest(".ficha").dataset.url;
+      var listo = function(){ btn.textContent = "Copiado"; btn.classList.add("ok");
+        setTimeout(function(){ btn.textContent = "Copiar"; btn.classList.remove("ok"); }, 1400); };
+      if (navigator.clipboard) navigator.clipboard.writeText(u).then(listo, function(){});
+      else listo();
+      return;
+    }
+    var f = e.target.closest(".ficha.viva");
+    if (f && !e.target.closest("a")) window.open(f.dataset.url, "_blank", "noopener");
+  });
+
+  /* ── puerta ── */
+  var aviso = document.getElementById("aviso"), boton = document.getElementById("entrar");
+  document.getElementById("formulario").addEventListener("submit", function(e){
+    e.preventDefault();
+    var clave = document.getElementById("clave").value;
+    if (!clave) return;
+    if (!window.PANEL_DATOS) { aviso.textContent = "Falta datos.js — corre cifrar.py."; return; }
+    boton.disabled = true; boton.textContent = "Abriendo…"; aviso.textContent = "";
+    abrir(clave, window.PANEL_DATOS).then(function(d){
+      datos = d;
+      document.getElementById("puerta").remove();
+      document.getElementById("panel").classList.remove("oculto");
+      pinta();
+    }).catch(function(){
+      aviso.textContent = "Clave incorrecta.";
+      boton.disabled = false; boton.textContent = "Entrar";
+      var c = document.getElementById("clave");
+      c.classList.add("temblor"); setTimeout(function(){ c.classList.remove("temblor"); }, 360);
+      c.select();
+    });
+  });
+})();
+</script>
+</body>
+</html>

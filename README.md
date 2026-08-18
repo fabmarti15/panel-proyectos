@@ -6,19 +6,18 @@
 
 El contenido va cifrado (AES-256-GCM + PBKDF2, 200.000 iteraciones). Sin la clave, `datos.js` no dice nada: no hay títulos, URLs ni carpetas en claro. El repo puede ser público sin filtrar nada.
 
-## Publicar por primera vez
+Publicado y verificado en vivo el 28-07-2026. Repo: https://github.com/fabmarti15/panel-proyectos
 
-1. Crea el repo en GitHub: https://github.com/new → nombre exacto `panel-proyectos`, **Public**, sin README ni .gitignore.
-2. Desde esta carpeta:
+## Sincronizar el repo local (una sola vez)
 
-   ```bash
-   cd "/Users/fabianmartinez/Documents/Claude 2/05 Herramientas/Panel de Proyectos Publicados/panel-proyectos"
-   git remote add origin https://github.com/fabmarti15/panel-proyectos.git
-   git push -u origin main
-   ```
+Los archivos se subieron por la web de GitHub, así que el historial local no calza con el remoto. Antes del primer `git push` desde el Mac:
 
-3. En el repo: **Settings → Pages → Source: Deploy from a branch → main / (root) → Save**.
-4. Espera ~1 minuto y abre la URL.
+```bash
+cd "/Users/fabianmartinez/Documents/Claude 2/05 Herramientas/Panel de Proyectos Publicados/panel-proyectos"
+git remote add origin https://github.com/fabmarti15/panel-proyectos.git
+git fetch origin
+git reset --hard origin/main
+```
 
 ## Actualizar el contenido
 

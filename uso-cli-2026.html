@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uso CLI 2026</title>
+<style>
+:root{
+  --bg:#fbfaf9; --fg:#1c1b1a; --dim:#8a8783; --line:#e9e6e2; --card:#fff;
+  --claude:#d97757; --codex:#2d5f7f; --hi:#1c1b1a;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:48px 24px 80px;background:var(--bg);color:var(--fg);
+  font:14px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto}
+h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:12.5px;margin:4px 0 36px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:28px;margin-bottom:44px}
+.kpi .n{font-size:26px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:11.5px;color:var(--dim);margin-top:1px}
+.kpi .d{font-size:11px;color:var(--dim);margin-top:3px}
+.bar-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:36px;
+  padding-bottom:20px;border-bottom:1px solid var(--line)}
+.chip{border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;
+  border-radius:999px;padding:5px 13px;font:inherit;font-size:12.5px;display:inline-flex;
+  align-items:center;gap:7px;transition:.15s;user-select:none}
+.chip:hover{border-color:var(--dim)}
+.chip.off{opacity:.35}
+.chip i{width:8px;height:8px;border-radius:50%;display:block}
+.spacer{flex:1}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--dim);font:inherit;font-size:12px;
+  padding:5px 12px;cursor:pointer}
+.seg button.on{background:var(--fg);color:var(--bg)}
+section{margin-bottom:52px}
+h2{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--dim);margin:0 0 4px}
+.h2sub{font-size:12px;color:var(--dim);margin:0 0 14px}
+.lg{display:flex;gap:16px;font-size:12px;margin:0 0 16px;flex-wrap:wrap}
+.lg span{display:inline-flex;align-items:center;gap:6px;color:var(--fg)}
+.lg i{width:11px;height:11px;border-radius:3px;display:block}
+.seglab{font-size:10.5px;font-weight:600;fill:#fff;letter-spacing:.02em}
+svg{width:100%;display:block;overflow:visible}
+.grid line{stroke:var(--line)}
+.axis{fill:var(--dim);font-size:11px}
+.colgroup rect{transition:opacity .12s}
+.colgroup:hover rect{opacity:.82}
+.vlabel{fill:var(--fg);font-size:11px;font-weight:500;font-variant-numeric:tabular-nums}
+.dot{stroke:var(--card);stroke-width:2}
+#tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:99;
+  background:var(--fg);color:var(--bg);padding:9px 11px;border-radius:7px;font-size:12px;
+  line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.18);max-width:250px}
+#tip b{font-weight:600}
+#tip .r{display:flex;justify-content:space-between;gap:16px;font-variant-numeric:tabular-nums}
+#tip .r span:last-child{opacity:.75}
+table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+th{text-align:right;font-weight:500;color:var(--dim);font-size:11px;padding:0 8px 9px;
+  border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th.s{cursor:pointer;user-select:none}
+th.s:hover{color:var(--fg)}
+td{padding:9px 8px;border-bottom:1px solid var(--line)}
+tr.m td{font-weight:600}
+tr.a td{color:var(--dim)}
+tr.a td:first-child{padding-left:20px}
+tr.t td{font-weight:600;border-bottom:none;border-top:1px solid var(--fg)}
+tr.hid{display:none}
+.mdl{font-size:10.5px;color:var(--dim);font-weight:400;margin-top:2px}
+.pill{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.mini{height:4px;background:var(--line);border-radius:2px;overflow:hidden;min-width:44px}
+.mini i{display:block;height:100%}
+.notes{font-size:12px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:20px}
+.notes code{font-size:11.5px;background:var(--line);padding:1px 5px;border-radius:4px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 32px;margin-bottom:34px}
+.fact{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);
+  padding-bottom:9px;font-size:12.5px}
+.fact span:first-child{color:var(--dim)}
+.fact span:last-child{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.upd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;background:var(--card);
+  border:1px solid var(--line);border-radius:8px;padding:11px 14px;margin:0 0 34px;font-size:12.5px}
+.upd b{font-weight:600}
+.upd .d{color:var(--dim)}
+.upd .dot{width:7px;height:7px;border-radius:50%;background:var(--claude);display:inline-block;margin-right:7px;vertical-align:1px}
+
+</style>
+</head>
+<body>
+<div id="tip"></div>
+<div class="wrap">
+
+<h1>Uso de CLI de agentes · 2026</h1>
+<div class="sub">Abr – Ago 2026 · <code>ccusage monthly --since=20260101</code></div>
+
+<div class="upd">
+  <span><span class="dot"></span><b>Última actualización:</b> 11 de agosto de 2026</span>
+  <span class="d">Datos hasta el 3 de agosto de 2026 (agosto parcial)</span>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="bar-controls">
+  <button class="chip" data-ag="Claude"><i style="background:var(--claude)"></i>Claude</button>
+  <button class="chip" data-ag="Codex"><i style="background:var(--codex)"></i>Codex</button>
+  <div class="spacer"></div>
+  <div class="seg" id="mode">
+    <button data-m="stack" class="on">Apilado</button>
+    <button data-m="group">Agrupado</button>
+  </div>
+</div>
+
+<section>
+  <h2>Costo mensual</h2>
+  <p class="h2sub" id="s1">USD</p>
+  <div class="lg" id="lg-c-cost"></div>
+  <svg id="c-cost" viewBox="0 0 800 260" preserveAspectRatio="none" height="260"></svg>
+</section>
+
+<section>
+  <h2>Tokens totales por mes</h2>
+  <p class="h2sub" id="s2">Millones de tokens (entrada + salida)</p>
+  <div class="lg" id="lg-c-tok"></div>
+  <svg id="c-tok" viewBox="0 0 800 260" preserveAspectRatio="none" height="260"></svg>
+</section>
+
+<section>
+  <h2>Entrada vs salida</h2>
+  <p class="h2sub"><span class="pill" style="background:var(--fg);opacity:.72"></span>Entrada
+    &nbsp;&nbsp;<span class="pill" style="background:var(--fg);opacity:.28"></span>Salida</p>
+  <svg id="c-io" viewBox="0 0 800 220" preserveAspectRatio="none" height="220"></svg>
+</section>
+
+<section>
+  <h2>Tendencia</h2>
+  <p class="h2sub" id="s4">Costo mensual por agente · escala lineal</p>
+  <div class="lg" id="lg-c-trend"></div>
+  <svg id="c-trend" viewBox="0 0 800 240" preserveAspectRatio="none" height="240"></svg>
+</section>
+
+<section>
+  <h2>Resumen del año</h2>
+  <p class="h2sub">Acumulado y derivados</p>
+  <div class="facts" id="facts"></div>
+</section>
+
+<section>
+  <h2>Detalle mes a mes</h2>
+  <p class="h2sub">Click en los encabezados para ordenar</p>
+  <table id="tbl"></table>
+</section>
+
+<div class="notes" id="notes"></div>
+
+</div>
+
+<script>
+/* ── datos ───────────────────────────────────────────────────────── */
+const D = [
+ {k:"2026-04", m:"Abr", ag:[
+   {n:"Codex", mo:["gpt-5.5"], in:1122699, out:70300, c:12.42}]},
+ {k:"2026-05", m:"May", ag:[
+   {n:"Codex", mo:["gpt-5.5"], in:4417395, out:252848, c:71.08}]},
+ {k:"2026-06", m:"Jun", ag:[
+   {n:"Claude", mo:["fable-5","haiku-4-5","opus-4-8","sonnet-4-6"], in:3294300, out:4667600, outA:1, c:627.04},
+   {n:"Codex",  mo:["gpt-5.5"], in:3952332, out:173664, c:47.80}]},
+ {k:"2026-07", m:"Jul", ag:[
+   {n:"Claude", mo:["fable-5","opus-4-8","sonnet-5"], in:1398175, out:874382, c:166.42},
+   {n:"Codex",  mo:["gpt-5.5","gpt-5.6-luna","gpt-5.6-sol","gpt-5.6-terra"], in:34998600, inA:1, out:2893700, outA:1, c:557.90}]},
+ {k:"2026-08", m:"Ago", ag:[
+   {n:"Codex", mo:["gpt-5.6-luna","gpt-5.6-sol","gpt-5.6-terra"], in:1367804, out:59086, c:9.14}], parcial:1}
+];
+const AG = ["Claude","Codex"];
+const COL = {Claude:"var(--claude)", Codex:"var(--codex)"};
+const HEX = {Claude:"#d97757", Codex:"#2d5f7f"};
+
+/* ── estado ──────────────────────────────────────────────────────── */
+let on = {Claude:true, Codex:true};
+let mode = "stack";
+
+/* ── formato ─────────────────────────────────────────────────────── */
+const nf  = new Intl.NumberFormat("es-CL");
+const usd = v => "$"+v.toLocaleString("es-CL",{minimumFractionDigits:2,maximumFractionDigits:2});
+const M   = v => (v/1e6).toLocaleString("es-CL",{minimumFractionDigits:2,maximumFractionDigits:2})+" M";
+const pct = v => (v*100).toLocaleString("es-CL",{maximumFractionDigits:1})+"%";
+
+const act = () => AG.filter(a=>on[a]);
+const get = (mo,a,f) => { const x = mo.ag.find(z=>z.n===a); return x ? x[f] : 0; };
+const sum = (mo,f) => act().reduce((s,a)=>s+get(mo,a,f),0);
+const tot = f => D.reduce((s,mo)=>s+sum(mo,f),0);
+
+/* ── tooltip ─────────────────────────────────────────────────────── */
+const tip = document.getElementById("tip");
+function bind(el, html){
+  el.style.cursor="default";
+  el.addEventListener("mousemove", e=>{
+    tip.innerHTML = html;
+    tip.style.opacity = 1;
+    const r = tip.getBoundingClientRect();
+    let x = e.clientX+14, y = e.clientY-10;
+    if(x + r.width  > innerWidth-8)  x = e.clientX - r.width - 14;
+    if(y + r.height > innerHeight-8) y = innerHeight - r.height - 8;
+    tip.style.left = x+"px"; tip.style.top = Math.max(8,y)+"px";
+  });
+  el.addEventListener("mouseleave", ()=> tip.style.opacity = 0);
+}
+const row = (l,v) => `<div class="r"><span>${l}</span><span>${v}</span></div>`;
+const rowA = (a,v) => `<div class="r"><span><i style="display:inline-block;width:8px;height:8px;
+  border-radius:2px;background:${HEX[a]};margin-right:6px"></i>${a}</span><span>${v}</span></div>`;
+
+/* ── helpers svg ─────────────────────────────────────────────────── */
+const NS = "http://www.w3.org/2000/svg";
+const mk = (t,at={}) => { const e=document.createElementNS(NS,t);
+  for(const k in at) e.setAttribute(k,at[k]); return e; };
+function niceMax(v){ if(v<=0) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v)));
+  for(const s of [1,1.5,2,2.5,3,4,5,6,8,10]) if(v <= s*p) return s*p;
+  return 10*p; }
+
+function axes(svg,W,H,PT,PB,PL,max,fmt){
+  const g = mk("g",{class:"grid"});
+  for(let i=0;i<=4;i++){
+    const y = PT + (H-PT-PB)*i/4, v = max*(1-i/4);
+    g.appendChild(mk("line",{x1:PL,x2:W,y1:y,y2:y}));
+    const t = mk("text",{x:0,y:y+3.5,class:"axis"}); t.textContent = fmt(v);
+    g.appendChild(t);
+  }
+  svg.appendChild(g);
+}
+function xlabels(svg,H,PB,PL,W){
+  D.forEach((mo,i)=>{
+    const bw=(W-PL)/D.length, cx=PL+bw*i+bw/2;
+    const t=mk("text",{x:cx,y:H-PB+18,class:"axis","text-anchor":"middle"});
+    t.textContent = mo.m + (mo.parcial?" ·":"");
+    svg.appendChild(t);
+  });
+}
+
+/* ── leyenda ─────────────────────────────────────────────────────── */
+function legend(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.innerHTML = act().map(a=>
+    `<span><i style="background:${HEX[a]}"></i>${a}</span>`).join("");
+}
+
+/* ── barras (verticales) ─────────────────────────────────────────── */
+function bars(id, field, fmt, tipf){
+  const svg=document.getElementById(id); svg.innerHTML="";
+  const W=800,H=+svg.getAttribute("height"),PT=18,PB=34,PL=52;
+  const A=act();
+  const max=niceMax(Math.max(...D.map(mo=>
+     mode==="stack" ? sum(mo,field) : Math.max(0,...A.map(a=>get(mo,a,field))) )));
+  const h=v=>(H-PT-PB)*(v/max);
+  axes(svg,W,H,PT,PB,PL,max,fmt);
+  const bw=(W-PL)/D.length;
+
+  D.forEach((mo,i)=>{
+    const g=mk("g",{class:"colgroup"}); svg.appendChild(g);
+    const pad=bw*0.26, inner=bw-pad;
+    if(mode==="stack"){
+      let y=H-PB;
+      A.forEach(a=>{
+        const v=get(mo,a,field); if(!v) return;
+        const bh=h(v); y-=bh;
+        g.appendChild(mk("rect",{x:PL+bw*i+pad/2,y,width:inner,height:Math.max(1,bh),
+          fill:HEX[a],rx:2}));
+        if(bh>20 && A.length>1){
+          const lb=mk("text",{x:PL+bw*i+bw/2,y:y+bh/2+4,class:"seglab","text-anchor":"middle"});
+          lb.textContent=a; g.appendChild(lb);
+        }
+      });
+    }else{
+      const n=Math.max(1,A.length), w=inner/n-3;
+      A.forEach((a,j)=>{
+        const v=get(mo,a,field); if(!v) return;
+        const bh=h(v);
+        g.appendChild(mk("rect",{x:PL+bw*i+pad/2+j*(w+3),y:H-PB-bh,width:w,
+          height:Math.max(1,bh),fill:HEX[a],rx:2}));
+        if(bh>26 && A.length>1){
+          const lb=mk("text",{x:PL+bw*i+pad/2+j*(w+3)+w/2,y:H-PB-bh+14,
+            class:"seglab","text-anchor":"middle"});
+          lb.textContent=a; g.appendChild(lb);
+        }
+      });
+    }
+    const t=mk("text",{x:PL+bw*i+bw/2,y:H-PB-h(mode==="stack"?sum(mo,field)
+        :Math.max(0,...A.map(a=>get(mo,a,field))))-7,class:"vlabel","text-anchor":"middle"});
+    t.textContent = fmt(sum(mo,field));
+    svg.appendChild(t);
+    const hit=mk("rect",{x:PL+bw*i,y:PT,width:bw,height:H-PT-PB,fill:"transparent"});
+    svg.appendChild(hit); bind(hit, tipf(mo));
+  });
+  xlabels(svg,H,PB,PL,W);
+}
+
+/* ── entrada vs salida (agrupado fijo) ───────────────────────────── */
+function ioChart(){
+  const svg=document.getElementById("c-io"); svg.innerHTML="";
+  const W=800,H=220,PT=18,PB=34,PL=52;
+  const max=niceMax(Math.max(...D.map(mo=>Math.max(sum(mo,"in"),sum(mo,"out")))));
+  const h=v=>(H-PT-PB)*(v/max);
+  axes(svg,W,H,PT,PB,PL,max,v=>M(v));
+  const bw=(W-PL)/D.length;
+  D.forEach((mo,i)=>{
+    const g=mk("g",{class:"colgroup"}); svg.appendChild(g);
+    const pad=bw*0.26, inner=bw-pad, w=inner/2-3;
+    [["in",.72],["out",.28]].forEach(([f,o],j)=>{
+      const v=sum(mo,f); if(!v) return;
+      g.appendChild(mk("rect",{x:PL+bw*i+pad/2+j*(w+3),y:H-PB-h(v),width:w,
+        height:Math.max(1,h(v)),fill:"currentColor","fill-opacity":o,rx:2}));
+    });
+    const hit=mk("rect",{x:PL+bw*i,y:PT,width:bw,height:H-PT-PB,fill:"transparent"});
+    svg.appendChild(hit);
+    bind(hit, `<b>${mo.m} 2026</b>`+row("Entrada",M(sum(mo,"in")))
+      +row("Salida",M(sum(mo,"out")))
+      +row("Ratio salida/entrada", pct(sum(mo,"out")/Math.max(1,sum(mo,"in")))));
+  });
+  xlabels(svg,H,PB,PL,W);
+}
+
+/* ── tendencia (líneas) ──────────────────────────────────────────── */
+function trend(){
+  const svg=document.getElementById("c-trend"); svg.innerHTML="";
+  const W=800,H=240,PT=18,PB=34,PL=52;
+  const A=act();
+  const max=niceMax(Math.max(1,...D.flatMap(mo=>A.map(a=>get(mo,a,"c")))));
+  const h=v=>(H-PT-PB)*(v/max);
+  axes(svg,W,H,PT,PB,PL,max,v=>"$"+Math.round(v));
+  const bw=(W-PL)/D.length, cx=i=>PL+bw*i+bw/2;
+  A.forEach(a=>{
+    const pts=D.map((mo,i)=>[cx(i),H-PB-h(get(mo,a,"c"))]);
+    svg.appendChild(mk("polyline",{points:pts.map(p=>p.join(",")).join(" "),
+      fill:"none",stroke:HEX[a],"stroke-width":2,"stroke-linejoin":"round"}));
+    pts.forEach((p,i)=>svg.appendChild(mk("circle",{cx:p[0],cy:p[1],r:3.6,
+      fill:HEX[a],class:"dot"})));
+    const last=pts[pts.length-1];
+    const tg=mk("text",{x:last[0]+10,y:last[1]+4,fill:HEX[a],
+      style:"font-size:11.5px;font-weight:600"});
+    tg.textContent=a; svg.appendChild(tg);
+  });
+  D.forEach((mo,i)=>{
+    const hit=mk("rect",{x:PL+bw*i,y:PT,width:bw,height:H-PT-PB,fill:"transparent"});
+    svg.appendChild(hit);
+    let html=`<b>${mo.m} 2026</b>`;
+    A.forEach(a=>html+=rowA(a, get(mo,a,"c")?usd(get(mo,a,"c")):"—"));
+    const prev=i>0?sum(D[i-1],"c"):0;
+    if(prev) html+=row("vs mes anterior",(sum(mo,"c")/prev-1>=0?"+":"")+pct(sum(mo,"c")/prev-1));
+    bind(hit,html);
+  });
+  xlabels(svg,H,PB,PL,W);
+}
+
+/* ── kpis + facts + tabla ────────────────────────────────────────── */
+function kpis(){
+  const c=tot("c"), i=tot("in"), o=tot("out");
+  const meses=D.filter(mo=>sum(mo,"c")>0).length;
+  const top=[...D].sort((a,b)=>sum(b,"c")-sum(a,"c"))[0];
+  document.getElementById("kpis").innerHTML = [
+    [usd(c),"Costo del año","abr–ago 2026"],
+    [M(i+o).replace(" M"," M"),"Tokens totales",`${M(i)} in · ${M(o)} out`],
+    [usd(c/meses),"Promedio mensual",`${meses} meses con uso`],
+    [top.m+" · "+usd(sum(top,"c")),"Mes más caro", pct(sum(top,"c")/c)+" del total"]
+  ].map(([n,l,d])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div><div class="d">${d}</div></div>`).join("");
+}
+
+function facts(){
+  const c=tot("c"), i=tot("in"), o=tot("out"), t=i+o;
+  const per = a => ({
+    c: D.reduce((s,mo)=>s+get(mo,a,"c"),0),
+    t: D.reduce((s,mo)=>s+get(mo,a,"in")+get(mo,a,"out"),0)
+  });
+  const cl=per("Claude"), cx=per("Codex");
+  const meses=D.filter(mo=>sum(mo,"c")>0).length;
+  const modelos=[...new Set(D.flatMap(mo=>mo.ag.filter(a=>on[a.n]).flatMap(a=>a.mo)))];
+  const f=[
+    ["Costo total año", usd(c)],
+    ["Tokens totales", M(t)],
+    ["Entrada / salida", `${M(i)} / ${M(o)}`],
+    ["Ratio salida/entrada", pct(o/i)],
+    ["Costo por millón de tokens", usd(c/(t/1e6))],
+    ["Promedio mensual", usd(c/meses)],
+    ["Proyección 12 meses", usd(c/meses*12)],
+    ["Costo Claude", `${usd(cl.c)} · ${pct(cl.c/c||0)}`],
+    ["Costo Codex", `${usd(cx.c)} · ${pct(cx.c/c||0)}`],
+    ["Tokens Claude", `${M(cl.t)} · ${pct(cl.t/t||0)}`],
+    ["Tokens Codex", `${M(cx.t)} · ${pct(cx.t/t||0)}`],
+    ["Modelos distintos usados", modelos.length],
+    ["Mes con más tokens", (()=>{const x=[...D].sort((a,b)=>(sum(b,"in")+sum(b,"out"))-(sum(a,"in")+sum(a,"out")))[0];
+       return `${x.m} · ${M(sum(x,"in")+sum(x,"out"))}`})()],
+    ["Periodo cubierto", "abr – ago 2026 (ago parcial)"]
+  ];
+  document.getElementById("facts").innerHTML =
+    f.map(([a,b])=>`<div class="fact"><span>${a}</span><span>${b}</span></div>`).join("");
+}
+
+let sortKey=null, sortDir=1;
+function table(){
+  const T=document.getElementById("tbl");
+  const blocks=[];
+  D.forEach(mo=>{
+    const A=mo.ag.filter(a=>on[a.n]);
+    if(!A.length) return;
+    const mi=A.reduce((s,a)=>s+a.in,0), mo_=A.reduce((s,a)=>s+a.out,0), mc=A.reduce((s,a)=>s+a.c,0);
+    blocks.push({
+      head:{t:"m", m:mo.m, k:mo.k, in:mi, out:mo_, tk:mi+mo_, c:mc, par:mo.parcial},
+      kids:A.map(a=>({t:"a", m:a.n, mo:a.mo, in:a.in, out:a.out, tk:a.in+a.out, c:a.c,
+        inA:a.inA, outA:a.outA}))
+    });
+  });
+  const gt=blocks.map(b=>b.head);
+  const TI=gt.reduce((s,r)=>s+r.in,0), TO=gt.reduce((s,r)=>s+r.out,0), TC=gt.reduce((s,r)=>s+r.c,0);
+  const maxTk=Math.max(...gt.map(r=>r.tk),1);
+
+  let h=`<tr>
+    <th class="s" data-k="k">Mes / agente</th>
+    <th class="s" data-k="in">Entrada</th>
+    <th class="s" data-k="out">Salida</th>
+    <th class="s" data-k="tk">Total</th>
+    <th>Peso</th>
+    <th class="s" data-k="c">Costo</th>
+    <th>$/M tok</th></tr>`;
+
+  let bl = blocks;
+  if(sortKey){
+    bl = [...blocks].sort((a,b)=>{
+      const x=a.head[sortKey], y=b.head[sortKey];
+      return (typeof x==="string" ? x.localeCompare(y) : x-y)*sortDir;
+    });
+  }
+  const list = bl.flatMap(b=>[b.head, ...b.kids]);
+
+  list.forEach(r=>{
+    const cpm = r.tk ? usd(r.c/(r.tk/1e6)) : "—";
+    if(r.t==="m"){
+      h+=`<tr class="m"><td>${r.m} 2026${r.par?' <span style="color:var(--dim);font-weight:400">· parcial</span>':''}</td>
+        <td>${nf.format(r.in)}</td><td>${nf.format(r.out)}</td><td>${M(r.tk)}</td>
+        <td><div class="mini"><i style="width:${r.tk/maxTk*100}%;background:var(--fg)"></i></div></td>
+        <td>${usd(r.c)}</td><td>${cpm}</td></tr>`;
+    }else{
+      h+=`<tr class="a"><td><span class="pill" style="background:${HEX[r.m]}"></span>${r.m}
+        <div class="mdl">${r.mo.join(" · ")}</div></td>
+        <td>${r.inA?"≈":""}${nf.format(r.in)}</td><td>${r.outA?"≈":""}${nf.format(r.out)}</td>
+        <td>${M(r.tk)}</td><td></td><td>${usd(r.c)}</td><td>${cpm}</td></tr>`;
+    }
+  });
+  h+=`<tr class="t"><td>Total ${act().join(" + ")||"—"}</td><td>≈${nf.format(TI)}</td>
+    <td>≈${nf.format(TO)}</td><td>${M(TI+TO)}</td><td></td><td>${usd(TC)}</td>
+    <td>${TI+TO?usd(TC/((TI+TO)/1e6)):"—"}</td></tr>`;
+  T.innerHTML=h;
+  T.querySelectorAll("th.s").forEach(th=>th.onclick=()=>{
+    const k=th.dataset.k;
+    sortDir = (sortKey===k) ? -sortDir : (k==="k"?1:-1);
+    sortKey=k; table();
+  });
+}
+
+function notes(){
+  document.getElementById("notes").innerHTML =
+   `Agosto es parcial (datos al 3 de agosto de 2026). Los valores con <b>≈</b> venían truncados por el
+    ancho del terminal — salida de Claude en junio, y entrada/salida de Codex en julio — así que los
+    totales tienen un margen de ±100 tokens. El costo total, <b>${usd(tot("c"))}</b>, sí es exacto.
+    Junio fue el mes en que entró Claude Code; julio concentró el mayor volumen de entrada por el uso
+    intensivo de Codex con los modelos gpt-5.6.
+    Para regenerar con precisión completa: <code>npx ccusage monthly --since=20260101 --json</code>.`;
+}
+
+/* ── render ──────────────────────────────────────────────────────── */
+function render(){
+  bars("c-cost","c", v=>"$"+Math.round(v), mo=>{
+    let h=`<b>${mo.m} 2026</b>`;
+    act().forEach(a=>{ const v=get(mo,a,"c"); if(v) h+=rowA(a,usd(v)); });
+    h+=row("Total",usd(sum(mo,"c")));
+    h+=row("Tokens",M(sum(mo,"in")+sum(mo,"out")));
+    return h;
+  });
+  bars("c-tok", "tk", v=>M(v), mo=>{
+    let h=`<b>${mo.m} 2026</b>`;
+    act().forEach(a=>{ const v=get(mo,a,"in")+get(mo,a,"out"); if(v) h+=rowA(a,M(v)); });
+    h+=row("Total",M(sum(mo,"in")+sum(mo,"out")));
+    h+=row("Costo",usd(sum(mo,"c")));
+    return h;
+  });
+  ioChart(); trend(); kpis(); facts(); table(); notes();
+  ['c-cost','c-tok','c-trend'].forEach(id=>legend('lg-'+id));
+}
+
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+  const a=b.dataset.ag;
+  if(on[a] && act().length===1) return;
+  on[a]=!on[a]; b.classList.toggle("off",!on[a]); render();
+});
+document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>{
+  mode=b.dataset.m;
+  document.querySelectorAll("#mode button").forEach(x=>x.classList.toggle("on",x===b));
+  render();
+});
+
+D.forEach(mo=>mo.ag.forEach(a=>a.tk=a.in+a.out));
+render();
+</script>
+</body>
+</html>

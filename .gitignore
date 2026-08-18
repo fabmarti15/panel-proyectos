@@ -2,3 +2,7 @@
 proyectos.json
 cifrar.py
 .DS_Store
+CONTEXTO.md
+_to_delete/
+.tmp.drive*
+node_modules/
