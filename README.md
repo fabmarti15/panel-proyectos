@@ -8,26 +8,19 @@ El contenido va cifrado (AES-256-GCM + PBKDF2, 200.000 iteraciones). Sin la clav
 
 Publicado y verificado en vivo el 28-07-2026. Repo: https://github.com/fabmarti15/panel-proyectos
 
-## Sincronizar el repo local (una sola vez)
-
-Los archivos se subieron por la web de GitHub, así que el historial local no calza con el remoto. Antes del primer `git push` desde el Mac:
-
-```bash
-cd "/Users/fabianmartinez/Documents/Claude 2/05 Herramientas/Panel de Proyectos Publicados/panel-proyectos"
-git remote add origin https://github.com/fabmarti15/panel-proyectos.git
-git fetch origin
-git reset --hard origin/main
-```
-
 ## Actualizar el contenido
 
 El listado se edita en `../proyectos.json` (queda **fuera** del repo, a propósito). Después:
 
 ```bash
 cd ..
-PANEL_CLAVE=martifab python3 cifrar.py
-cd panel-proyectos && git add datos.js && git commit -m "Actualizar inventario" && git push
+python3 cifrar.py          # pide la clave del panel
+encolar -m "Actualizar inventario" "05 Herramientas/Panel de Proyectos Publicados/panel-proyectos"
 ```
+
+La clave no se escribe en este archivo ni en ningún comando: `cifrar.py` la pide. Si
+necesitas pasarla sin que quede en el historial de la shell, exporta `PANEL_CLAVE` en la
+sesión y listo.
 
 ## Archivos
 
