@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Patrimonio total</title>
+<style>
+:root{--tinta:#141414;--gris:#6b6b6b;--linea:#e6e4df;--rojo:#a3241f;--verde:#1d5c3a;--suave:#faf9f7}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--tinta);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:940px;margin:0 auto;padding:36px 22px 90px}
+h1{font-size:24px;font-weight:650;margin:0}
+h2{font-size:17px;font-weight:650;margin:34px 0 10px}
+.sub{color:var(--gris);font-size:13px;margin:6px 0 0}
+.controles{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 4px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--linea);border-radius:99px;overflow:hidden}
+.seg button{border:none;background:#fff;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--gris)}
+.seg button.on{background:#141414;color:#fff}
+nav{display:flex;gap:2px;margin:26px 0 0;border-bottom:1px solid var(--linea);flex-wrap:wrap}
+nav button{border:none;background:none;padding:10px 14px;font-size:14.5px;cursor:pointer;color:var(--gris);border-bottom:2px solid transparent;margin-bottom:-1px}
+nav button.on{color:var(--tinta);font-weight:600;border-bottom-color:#141414}
+section{display:none;padding-top:8px}
+section.on{display:block}
+.hero{margin:30px 0 8px}
+.hero .uf{font-size:42px;font-weight:700;letter-spacing:-.5px}
+.hero .eq{color:var(--gris);font-size:15px;margin-top:2px}
+.kpis{display:flex;flex-wrap:wrap;gap:24px;margin:24px 0 4px}
+.kpi .v{font-size:19px;font-weight:650}
+.kpi .l{color:var(--gris);font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{text-align:left;color:var(--gris);font-weight:500;font-size:12.5px;padding:6px 8px 6px 0;border-bottom:1px solid var(--linea)}
+td{padding:8px 8px 8px 0;border-bottom:1px solid var(--linea);vertical-align:top}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.neg{color:var(--rojo)}
+.pos{color:var(--verde)}
+.nota{color:var(--gris);font-size:13px;margin-top:3px}
+.chip{display:inline-block;font-size:11.5px;color:var(--gris);border:1px solid var(--linea);border-radius:99px;padding:1px 9px;margin-left:8px;vertical-align:2px}
+.dist{display:flex;gap:30px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.leyenda{font-size:13.5px}
+.leyenda div{margin:4px 0;display:flex;align-items:center;gap:8px}
+.leyenda i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.prop,.card{border:1px solid var(--linea);border-radius:10px;padding:16px 18px;margin:14px 0}
+.prop h3,.card h3{margin:0;font-size:15.5px}
+.prop .uso{color:var(--gris);font-size:13px;margin:2px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 18px;font-size:14px}
+.grid .l{color:var(--gris);font-size:11.5px}
+.grid .v{font-weight:600;font-variant-numeric:tabular-nums}
+.wf{margin:16px 0}
+.wf .fila{display:grid;grid-template-columns:190px 1fr 150px;gap:12px;align-items:center;margin:7px 0;font-size:13.5px}
+.wf .pista{background:#f0eeea;border-radius:4px;height:14px;overflow:hidden}
+.wf .barra{height:100%;border-radius:4px;background:#141414}
+.wf .roja{background:var(--rojo)}
+.wf .verde{background:var(--verde)}
+.wf .punteada{background:repeating-linear-gradient(45deg,#c9c6bd 0 6px,#e6e4df 6px 12px)}
+.wf .val{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+input[type=number],input[type=text]{border:1px solid var(--linea);border-radius:7px;padding:6px 9px;font-size:14px;width:110px;font-variant-numeric:tabular-nums}
+input[type=range]{width:220px;accent-color:#141414}
+.preset{border:1px solid var(--linea);background:var(--suave);border-radius:99px;padding:4px 12px;font-size:12.5px;cursor:pointer;margin-right:6px}
+ul{margin:8px 0;padding-left:20px;color:var(--gris);font-size:13.5px}
+li{margin:4px 0}
+.pie{color:var(--gris);font-size:12.5px;margin-top:46px;border-top:1px solid var(--linea);padding-top:14px}
+#gate{max-width:340px;margin:18vh auto;padding:0 22px;text-align:center}
+#gate h1{font-size:20px}
+#gate input{width:100%;margin-top:18px;padding:10px 12px;font-size:16px;border:1px solid var(--linea);border-radius:8px;text-align:center}
+#gate button{width:100%;margin-top:10px;padding:10px;font-size:15px;border:none;border-radius:8px;background:#141414;color:#fff;cursor:pointer}
+#gerr{color:var(--rojo);font-size:13.5px;min-height:20px;margin-top:10px}
+@media (max-width:600px){.hero .uf{font-size:32px}.wf .fila{grid-template-columns:120px 1fr 110px}}
+</style>
+</head>
+<body>
+<div id="gate">
+  <h1>Patrimonio total</h1>
+  <p class="sub">Contenido cifrado. Ingresa la clave.</p>
+  <input id="clave" type="password" autocomplete="current-password" placeholder="Clave">
+  <button id="entrar">Entrar</button>
+  <p id="gerr"></p>
+</div>
+<div class="wrap" id="app" hidden></div>
+<script>
+const PAYLOAD = {"v": 1, "iter": 200000, "salt": "KqjtoGt+BwvztzBcupfbpg==", "iv": "+jdfbTPOzXKWa/k0", "ct": "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"};
+function b64a(s){const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+async function descifrar(clave){
+  const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey("raw",enc.encode(clave),"PBKDF2",false,["deriveKey"]);
+  const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64a(PAYLOAD.salt),iterations:PAYLOAD.iter,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64a(PAYLOAD.iv)},key,b64a(PAYLOAD.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+const nf0=new Intl.NumberFormat("es-CL",{maximumFractionDigits:0});
+const nf1=new Intl.NumberFormat("es-CL",{minimumFractionDigits:1,maximumFractionDigits:1});
+const nf2=new Intl.NumberFormat("es-CL",{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let D=null, UFv=0, USDv=0;
+const state={unit:"UF", castigo:0.10, tab:"resumen"};
+function fmt(clpVal){ // formatea un monto en CLP según la unidad elegida
+  if(state.unit==="UF") return nf0.format(Math.round(clpVal/UFv))+" UF";
+  if(state.unit==="USD") return "USD "+nf0.format(Math.round(clpVal/USDv));
+  return "$"+nf1.format(clpVal/1e6)+" M";
+}
+const fUF=x=>nf0.format(Math.round(x))+" UF";
+const fCLP=x=>"$"+nf0.format(Math.round(x));
+const COL=["#1f1f1e","#57564f","#8b897f","#b8b5a9","#2c5f43","#8a4a3a"];
+
+function modelo(c){
+  const props=D.props.map(p=>{
+    const cons=p.mercado*(1-c), equity=cons-p.saldo;
+    return {...p, cons, equity, equity_clp:equity*UFv};
+  });
+  const inmoClp=props.reduce((s,p)=>s+p.equity_clp,0);
+  const bloques=[];
+  for(const b of D.bloques_otros) bloques.push({nombre:b.nombre,clp:b.clp,items:b.items,pos:b.pos});
+  bloques.push({nombre:"Inmobiliario (equity)",clp:inmoClp,pos:4,
+    items:props.map(p=>({n:p.n+" — "+p.dir,clp:p.equity_clp,f:"hoy",orig:nf0.format(Math.round(p.equity))+" UF",
+      d:"Equity: "+nf0.format(Math.round(p.cons))+" UF valorización − "+nf2.format(p.saldo)+" UF de hipoteca."}))});
+  bloques.sort((a,b)=>a.pos-b.pos);
+  const activos=bloques.reduce((s,b)=>s+b.clp,0);
+  bloques.forEach(b=>b.pct=b.clp/activos*100);
+  const pasivos=D.pasivos.reduce((s,p)=>s+p.clp,0);
+  const inmoUF=inmoClp/UFv;
+  const consTot=props.reduce((s,p)=>s+p.cons,0);
+  const hipTot=props.reduce((s,p)=>s+p.saldo,0);
+  return {props,bloques,activos,pasivos,neto:activos-pasivos,
+    pctEquity:inmoClp/activos*100,
+    pctBruto:consTot/(activos/UFv+hipTot)*100};
+}
+
+function donut(bloques){
+  const R=62,C=2*Math.PI*R;let off=0,segs="";
+  bloques.forEach((b,k)=>{
+    const largo=b.pct/100*C;
+    segs+=`<circle r="${R}" cx="80" cy="80" fill="none" stroke="${COL[k%COL.length]}" stroke-width="26"
+      stroke-dasharray="${largo} ${C-largo}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)"/>`;
+    off+=largo;
+  });
+  return `<svg width="160" height="160" viewBox="0 0 160 160" role="img">${segs}</svg>`;
+}
+
+function rResumen(m){
+  let h=`<div class="hero"><div class="uf">${fmt(m.neto)}</div>
+  <div class="eq">Patrimonio neto · ${fUF(m.neto/UFv)} · $${nf1.format(m.neto/1e6)} M · USD ${nf0.format(Math.round(m.neto/USDv))}</div></div>`;
+  h+=`<div class="kpis">
+  <div class="kpi"><div class="v">${fmt(m.activos)}</div><div class="l">Activos</div></div>
+  <div class="kpi"><div class="v neg">−${fmt(m.pasivos)}</div><div class="l">Pasivos externos</div></div>
+  <div class="kpi"><div class="v">${nf1.format(m.pctEquity)}%</div><div class="l">Ladrillo (equity / activos)</div></div>
+  <div class="kpi"><div class="v">${nf1.format(m.pctBruto)}%</div><div class="l">Ladrillo bruto</div></div></div>`;
+  h+=`<div class="dist">${donut(m.bloques)}<div class="leyenda">`;
+  m.bloques.forEach((b,k)=>{h+=`<div><i style="background:${COL[k%COL.length]}"></i>${esc(b.nombre)} · <b>${nf1.format(b.pct)}%</b> · ${fmt(b.clp)}</div>`});
+  h+=`</div></div>`;
+  h+=`<table><tr><th>Bloque</th><th class="num">Monto</th><th class="num">%</th></tr>`;
+  m.bloques.forEach(b=>{h+=`<tr><td>${esc(b.nombre)}</td><td class="num">${fmt(b.clp)}</td><td class="num">${nf1.format(b.pct)}%</td></tr>`});
+  h+=`<tr><td><b>Total activos</b></td><td class="num"><b>${fmt(m.activos)}</b></td><td class="num">100%</td></tr>`;
+  D.pasivos.forEach(p=>{h+=`<tr><td class="neg">${esc(p.n)}</td><td class="num neg">−${fmt(p.clp)}</td><td class="num"></td></tr>`});
+  h+=`<tr><td><b>Patrimonio neto</b></td><td class="num"><b>${fmt(m.neto)}</b></td><td class="num"></td></tr></table>`;
+  return h;
+}
+
+function rInmo(m){
+  const totInv=m.props.reduce((s,p)=>s+p.inv_uf,0);
+  const totMer=m.props.reduce((s,p)=>s+p.mercado,0);
+  const totGan=totMer-totInv;
+  let h=`<div class="kpis">
+  <div class="kpi"><div class="v">${fUF(totInv)}</div><div class="l">Total invertido (compras + mejoras)</div></div>
+  <div class="kpi"><div class="v">${fUF(totMer)}</div><div class="l">Valor de mercado hoy (tu estimación)</div></div>
+  <div class="kpi"><div class="v pos">+${fUF(totGan)} (+${nf1.format(totGan/totInv*100)}%)</div><div class="l">Ganancia en UF · ≈ ${fmt(totGan*UFv)}</div></div></div>`;
+  for(const p of m.props){
+    h+=`<div class="prop"><h3>${esc(p.n)} <span class="chip">crédito ${esc(p.credito)}</span></h3>
+    <div class="uso">${esc(p.dir)} · ${esc(p.uso)}</div>
+    <div class="grid">
+    <div><div class="l">Mercado (tu estimación)</div><div class="v">${fUF(p.mercado)}</div></div>
+    <div><div class="l">Valorización usada${state.castigo>0?" (−10%)":" (mercado)"}</div><div class="v">${fUF(p.cons)}</div></div>
+    <div><div class="l">Hipoteca (saldo)</div><div class="v neg">−${nf2.format(p.saldo)} UF</div></div>
+    <div><div class="l">Equity</div><div class="v">${fUF(p.equity)} · ${fmt(p.equity_clp)}</div></div>
+    <div><div class="l">Dividendo</div><div class="v">${nf2.format(p.div_uf)} UF ≈ ${fCLP(p.div_uf*UFv)}/mes</div></div>
+    <div><div class="l">Cuota · CAEV</div><div class="v">${esc(p.cuota)} · ${esc(p.caev)}</div></div>`;
+    if(p.arr_clp>0){h+=`<div><div class="l">Arriendo</div><div class="v">${fCLP(p.arr_clp)}/mes</div></div>
+    <div><div class="l">Rentabilidad bruta arriendo</div><div class="v">${nf1.format(p.yield_pct)}% anual</div></div>`;}
+    h+=`</div>
+    <h2 style="margin-top:18px;font-size:14.5px">Cuánto has ganado desde la compra</h2>
+    <div class="nota">${esc(p.compra_desc)}</div>
+    <div class="grid" style="margin-top:10px">
+    <div><div class="l">Invertido total</div><div class="v">${fUF(p.inv_uf)}</div></div>
+    <div><div class="l">Vale hoy (mercado)</div><div class="v">${fUF(p.mercado)}</div></div>
+    <div><div class="l">Ganancia en UF</div><div class="v ${p.gan_uf>=0?"pos":"neg"}">${p.gan_uf>=0?"+":""}${fUF(p.gan_uf)} (${p.gan_uf>=0?"+":""}${nf1.format(p.gan_pct)}%)</div></div>
+    <div><div class="l">Ritmo anual (${p.anios} años)</div><div class="v">${nf1.format(p.cagr_pct)}% en UF</div></div>`;
+    if(p.compra_clp){h+=`<div><div class="l">En pesos nominales</div><div class="v">${fCLP(p.compra_clp)} → ${fCLP(p.hoy_clp)} (+${nf0.format((p.hoy_clp/p.compra_clp-1)*100)}%)</div></div>`;}
+    h+=`</div><div class="nota">Ganancia contra tu estimación de mercado, sin descontar dividendos pagados ni costo del crédito.</div></div>`;
+  }
+  return h;
+}
+
+function rFlujo(){
+  const g=D.genoma;
+  let h=`<div class="kpis">
+  <div class="kpi"><div class="v">${fmt(g.rec_tot)}</div><div class="l">Recibido (1ª + 2ª cuota)</div></div>
+  <div class="kpi"><div class="v neg">−${fmt(g.gas_tot)} (${nf1.format(g.gas_pct)}%)</div><div class="l">Gastado (impuestos + giros)</div></div>
+  <div class="kpi"><div class="v">${fmt(g.neto_trab)}</div><div class="l">Quedó trabajando</div></div>
+  <div class="kpi"><div class="v pos">${fmt(g.propio_hoy)} (+${nf1.format(g.rentab_pct)}%)</div><div class="l">Eso vale hoy</div></div></div>`;
+  const base=g.rec_tot;
+  const fila=(lbl,val,cls,w)=>`<div class="fila"><div>${lbl}</div><div class="pista"><div class="barra ${cls}" style="width:${Math.min(w,100)}%"></div></div><div class="val">${fmt(val)}</div></div>`;
+  h+=`<div class="wf">`;
+  h+=fila("Recibido",g.rec_tot,"",100);
+  h+=fila("Gastado",g.gas_tot,"roja",g.gas_tot/base*100);
+  h+=fila("Quedó trabajando",g.neto_trab,"",g.neto_trab/base*100);
+  h+=fila("Vale hoy",g.propio_hoy,"verde",g.propio_hoy/base*100);
+  h+=fila("Por venir (3ª cuota)",g.pv_clp,"punteada",g.pv_clp/base*100);
+  h+=`</div>`;
+  h+=`<h2>Entradas</h2><table><tr><th>Cuota</th><th class="num">Monto</th></tr>`;
+  g.recibido.forEach(r=>{h+=`<tr><td><b>${esc(r.n)}</b> <span class="chip">${esc(r.f)}</span><div class="nota">${esc(r.d)}</div></td><td class="num">${fmt(r.clp)}</td></tr>`});
+  h+=`</table><h2>Salidas (gastado)</h2><table><tr><th>Destino</th><th class="num">Monto</th></tr>`;
+  g.gastado.forEach(r=>{h+=`<tr><td><b>${esc(r.n)}</b> <span class="chip">${esc(r.f)}</span><div class="nota">${esc(r.d)}</div></td><td class="num neg">−${fmt(r.clp)}</td></tr>`});
+  h+=`</table>`;
+  h+=`<div class="card"><h3>Por venir: ${esc(g.pv.n)} (${esc(g.pv.f)})</h3>
+  <div class="nota">${esc(g.pv.d)}</div>
+  <div class="grid" style="margin-top:10px"><div><div class="l">USD</div><div class="v">USD ${nf0.format(g.pv.usd)}</div></div>
+  <div><div class="l">En pesos de hoy</div><div class="v">${fmt(g.pv_clp)}</div></div></div></div>`;
+  h+=`<p class="nota">${esc(g.nota)}</p>`;
+  return h;
+}
+
+function rSim(m){
+  const s=D.sim;
+  let h=`<div class="card"><h3>1 · Proyectar una inversión</h3>
+  <p class="nota">${esc(s.nota)}</p>
+  <div style="margin:12px 0">
+  ${s.presets.map(p=>`<button class="preset" data-m="${p.m}">${esc(p.l)}</button>`).join("")}
+  </div>
+  <div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center">
+  <label>Monto: $ <input type="number" id="simMonto" value="100" min="1" step="10"> M</label>
+  <label>Años: <input type="range" id="simAnios" min="1" max="15" value="5"> <b id="simAniosV">5</b></label>
+  </div>
+  <table style="margin-top:14px"><tr><th>Alternativa</th><th class="num">Tasa real anual</th><th class="num">Valor final</th><th class="num">Ganancia</th></tr>`;
+  s.alternativas.forEach((a,k)=>{
+    h+=`<tr><td>${esc(a.n)}<div class="nota">${esc(a.d)}</div></td>
+    <td class="num"><input type="number" class="simTasa" data-k="${k}" value="${a.tasa}" step="0.5" style="width:70px"> %</td>
+    <td class="num" id="simF${k}">—</td><td class="num" id="simG${k}">—</td></tr>`;
+  });
+  h+=`</table><p class="nota">Resultados en plata de hoy (tasas reales sobre UF).</p></div>`;
+
+  h+=`<div class="card"><h3>2 · ¿Cuánto ladrillo quiero?</h3>
+  <p class="nota">Hoy el equity inmobiliario es el ${nf1.format(m.pctEquity)}% de tus activos. Mueve la meta y mira cuánta plata habría que mover.</p>
+  <label>Meta: <input type="range" id="metaPct" min="0" max="60" value="${Math.round(m.pctEquity)}"> <b id="metaPctV">${Math.round(m.pctEquity)}%</b></label>
+  <p id="metaOut" style="font-size:15px;margin:10px 0 2px"></p>
+  <p class="nota">Cálculo simple: mover equity entre lo financiero y propiedades, activos totales constantes.</p></div>`;
+
+  h+=`<div class="card"><h3>3 · ¿Prepagar hipotecas o invertir?</h3>
+  <p class="nota">Debes ${nf2.format(s.saldo_hip_uf)} UF en hipotecas a CAEV promedio ${nf1.format(s.caev_pond)}%. Si tu inversión rinde más que eso, conviene invertir; si rinde menos, prepagar.</p>
+  <label>Retorno esperado de tu inversión: <input type="number" id="ppTasa" value="4.0" step="0.5" style="width:70px"> % real</label>
+  <p id="ppOut" style="font-size:15px;margin:10px 0 2px"></p></div>`;
+  return h;
+}
+
+function rDetalle(m){
+  let h=`<table><tr><th>Ítem</th><th class="num">Valor origen</th><th class="num">Monto</th></tr>`;
+  for(const b of m.bloques){for(const i of b.items){
+    h+=`<tr><td><b>${esc(i.n)}</b> <span class="chip">${esc(b.nombre)} · ${esc(i.f)}</span><div class="nota">${esc(i.d)}</div></td>
+    <td class="num">${i.orig?esc(i.orig):"—"}</td><td class="num">${fmt(i.clp)}</td></tr>`;
+  }}
+  D.pasivos.forEach(p=>{h+=`<tr><td class="neg"><b>${esc(p.n)}</b> <span class="chip">pasivo · ${esc(p.f)}</span><div class="nota">${esc(p.d)}</div></td>
+  <td class="num">${p.orig?esc(p.orig):"—"}</td><td class="num neg">−${fmt(p.clp)}</td></tr>`});
+  h+=`</table>`;
+  h+=`<h2>Criterios</h2><ul>${D.criterios.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`;
+  h+=`<h2>Qué queda fuera</h2><ul>${D.exclusiones.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`;
+  return h;
+}
+
+function simCalcular(m){
+  const monto=(parseFloat(document.getElementById("simMonto").value)||0)*1e6;
+  const anios=parseInt(document.getElementById("simAnios").value);
+  document.getElementById("simAniosV").textContent=anios;
+  document.querySelectorAll(".simTasa").forEach(inp=>{
+    const k=inp.dataset.k, r=(parseFloat(inp.value)||0)/100;
+    const fin=monto*Math.pow(1+r,anios);
+    document.getElementById("simF"+k).textContent=fmt(fin);
+    const g=document.getElementById("simG"+k);
+    g.textContent=(fin>=monto?"+":"")+fmt(fin-monto);
+    g.className="num "+(fin>=monto?"pos":"neg");
+  });
+  const meta=parseInt(document.getElementById("metaPct").value);
+  document.getElementById("metaPctV").textContent=meta+"%";
+  const inmoClp=m.activos*m.pctEquity/100;
+  const dif=m.activos*meta/100-inmoClp;
+  const out=document.getElementById("metaOut");
+  if(Math.abs(dif)<m.activos*0.005){out.textContent="Ya estás en la meta.";}
+  else if(dif>0){out.innerHTML=`Comprar <b>${fmt(dif)}</b> más de propiedad (equity), p. ej. moviéndolo desde lo financiero.`;}
+  else{out.innerHTML=`Reducir ladrillo en <b>${fmt(-dif)}</b> (vender o hipotecar) y pasarlo a financiero.`;}
+  const rp=parseFloat(document.getElementById("ppTasa").value)||0;
+  const difUF=D.sim.saldo_hip_uf*(rp-D.sim.caev_pond)/100;
+  const pp=document.getElementById("ppOut");
+  if(difUF>=0){pp.innerHTML=`Invirtiendo a ${nf1.format(rp)}% ganas <b class="pos">+${nf0.format(difUF)} UF/año</b> (≈ ${fmt(difUF*UFv)}) más que prepagando.`;}
+  else{pp.innerHTML=`A ${nf1.format(rp)}% te conviene <b>prepagar</b>: ahorras <b class="pos">${nf0.format(-difUF)} UF/año</b> (≈ ${fmt(-difUF*UFv)}).`;}
+}
+
+function pintar(){
+  const m=modelo(state.castigo);
+  const renders=[rResumen,rInmo,rFlujo,rSim,rDetalle];
+  D.tabs.forEach((t,k)=>{document.getElementById("t-"+t[0]).innerHTML=renders[k].length?renders[k](m):renders[k]()});
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===state.tab));
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==="t-"+state.tab));
+  document.querySelectorAll("#segUnit button").forEach(b=>b.classList.toggle("on",b.dataset.u===state.unit));
+  document.querySelectorAll("#segVal button").forEach(b=>b.classList.toggle("on",parseFloat(b.dataset.c)===state.castigo));
+  // listeners del simulador
+  const sim=document.getElementById("t-sim");
+  sim.querySelectorAll("input").forEach(i=>i.addEventListener("input",()=>simCalcular(m)));
+  sim.querySelectorAll(".preset").forEach(b=>b.addEventListener("click",()=>{document.getElementById("simMonto").value=b.dataset.m;simCalcular(m)}));
+  simCalcular(m);
+}
+
+function armar(d){
+  D=d; UFv=d.ind.uf; USDv=d.ind.usd; state.castigo=d.castigo;
+  const app=document.getElementById("app");
+  app.hidden=false;
+  app.innerHTML=`<h1>Patrimonio total</h1>
+  <p class="sub">${esc(d.titular)} · UF $${nf2.format(UFv)} y dólar $${nf2.format(USDv)} al ${esc(d.ind.fecha)} (${esc(d.ind.origen)}) · generado ${esc(d.generado)}</p>
+  <div class="controles">
+    <span class="seg" id="segUnit">
+      <button data-u="UF">UF</button><button data-u="CLP">CLP</button><button data-u="USD">USD</button>
+    </span>
+    <span class="seg" id="segVal">
+      <button data-c="0.1">Conservador −10%</button><button data-c="0">Mercado pleno</button>
+    </span>
+  </div>
+  <nav id="tabs">${d.tabs.map(t=>`<button data-t="${t[0]}">${esc(t[1])}</button>`).join("")}</nav>
+  ${d.tabs.map(t=>`<section id="t-${t[0]}"></section>`).join("")}
+  <p class="pie">Fuente única: patrimonio.json (local, nunca en el repo). Para actualizar: editar el JSON → correr generar_patrimonio.py → publicar con «publica».</p>`;
+  document.querySelectorAll("#tabs button").forEach(b=>b.addEventListener("click",()=>{state.tab=b.dataset.t;location.hash=state.tab;pintar()}));
+  document.querySelectorAll("#segUnit button").forEach(b=>b.addEventListener("click",()=>{state.unit=b.dataset.u;pintar()}));
+  document.querySelectorAll("#segVal button").forEach(b=>b.addEventListener("click",()=>{state.castigo=parseFloat(b.dataset.c);pintar()}));
+  if(location.hash){const t=location.hash.slice(1);if(d.tabs.some(x=>x[0]===t))state.tab=t;}
+  pintar();
+}
+
+async function intentar(){
+  const err=document.getElementById("gerr");
+  err.textContent="";
+  try{
+    const d=await descifrar(document.getElementById("clave").value);
+    document.getElementById("gate").remove();
+    armar(d);
+  }catch(e){err.textContent="Clave incorrecta.";}
+}
+document.getElementById("entrar").addEventListener("click",intentar);
+document.getElementById("clave").addEventListener("keydown",e=>{if(e.key==="Enter")intentar()});
+document.getElementById("clave").focus();
+</script>
+</body>
+</html>
