@@ -1,21 +1,11 @@
 {
- "generado": "2026-08-25T07:15:08",
- "whatsapp_leido_hasta": "2026-08-25T02:18:13",
+ "generado": "2026-08-26T07:15:07",
+ "whatsapp_leido_hasta": "2026-08-26T03:32:40",
  "items": [
   {
-   "titulo": "Mandar cosas para la Feria de las Pulgas de 6° D Semana del lunes 24 de agosto, fecha inferida: es la actividad del curs",
+   "titulo": "Mandar cosas para la Feria de las Pulgas de 6° D Semana del lunes 31 de agosto, fecha inferida: Caro avisó el lunes 24 a",
    "grupo": "6D 📕📚🏫!!!!",
-   "fecha_mensaje": "viernes 21 de agosto, 15:07"
-  },
-  {
-   "titulo": "Confirmar si Juanjo quiere jugar la Copa Challenger junior de racquetball Lunes 24 de agosto, fecha inferida («este lune",
-   "grupo": "Escuela racquetball Estadio Español",
-   "fecha_mensaje": "sábado 22 de agosto, 15:32"
-  },
-  {
-   "titulo": "Ir a la Escuela para Padres de 6° Martes 25 de agosto, en el colegio. La recordaron el jueves 20 en la comunidad y el do",
-   "grupo": "6D 📕📚🏫!!!!",
-   "fecha_mensaje": "viernes 7 de agosto, 13:59"
+   "fecha_mensaje": "martes 25 de agosto, 00:08"
   },
   {
    "titulo": "Contar con el coach Agustín en el ensayo de banda Viernes 28 de agosto. Gaby avisó el viernes 21 que Agustín va a ese en",
@@ -43,6 +33,11 @@
    "fecha_mensaje": "miércoles 12 de agosto, 19:51"
   },
   {
+   "titulo": "Llevar a Jaci a que le vean el tobillo Sin fecha, pendiente desde el lunes 24 de agosto: la profe Natalia escribió a las",
+   "grupo": "Cuarto Básico D - 2026🧍‍♀️🧍1L de aceite + 1kg de azucar",
+   "fecha_mensaje": null
+  },
+  {
    "titulo": "Se sugiere ir a la Fiesta de la Luz Martes 1 de septiembre, 19:30, en el colegio. Hito de la Primera Comunión, van padre",
    "grupo": "Cuarto Básico D - 2026🧍‍♀️🧍1L de aceite + 1kg de azucar",
    "fecha_mensaje": "jueves 20 de agosto, 16:31"
@@ -58,14 +53,24 @@
    "fecha_mensaje": "viernes 7 de agosto, 14:55"
   },
   {
+   "titulo": "Mandar lo que le toca a Xabi a la despedida de Santi Viernes 28 de agosto, convivencia en el curso: es la última semana",
+   "grupo": "PK-C CPH CJA",
+   "fecha_mensaje": "martes 25 de agosto, 17:14"
+  },
+  {
+   "titulo": "Juntar lo que piden para la Semana del Colegio Sin fecha en el mensaje, va en el correo del colegio: a Prekínder C le to",
+   "grupo": "PK-C CPH CJA",
+   "fecha_mensaje": "lunes 24 de agosto, 16:59"
+  },
+  {
    "titulo": "Confirmar la junta de la comunidad de Prekínder C Jueves 3 de septiembre, 20:15, en la casa de Fabián y Vale. La fecha c",
    "grupo": "6D 📕📚🏫!!!!",
    "fecha_mensaje": "viernes 7 de agosto, 13:59"
   },
   {
    "titulo": "Preparar el vestuario del Día de la Chilenidad Martes 8 de septiembre, van los tres: Xabi con Primer Ciclo de 11:15 a 12",
-   "grupo": "PK-C CPH CJA",
-   "fecha_mensaje": "viernes 14 de agosto, 16:28"
+   "grupo": "Cuarto Básico D - 2026🧍‍♀️🧍1L de aceite + 1kg de azucar",
+   "fecha_mensaje": "viernes 7 de agosto, 14:55"
   },
   {
    "titulo": "Vacaciones de septiembre Lunes 14 al domingo 20 de septiembre.",
@@ -83,29 +88,19 @@
    "fecha_mensaje": "miércoles 29 de julio, 17:23"
   },
   {
-   "titulo": "Feria de las Pulgas de 6° D Caro dejó el flyer el viernes 21 a las 11:04: hay que ir mandando cosas al colegio con los n",
+   "titulo": "Feria de las Pulgas de 6° D Caro avisó el lunes 24 a las 20:08 que las actividades de la Semana de la Solidaridad se cor",
    "grupo": "6D 📕📚🏫!!!!",
-   "fecha_mensaje": "viernes 21 de agosto, 15:07"
-  },
-  {
-   "titulo": "Copa Challenger junior, dentro del Mundial de racquetball de Temuco El profe lo contó el sábado 22: dentro del Torneo Mu",
-   "grupo": "Escuela racquetball Estadio Español",
-   "fecha_mensaje": "sábado 22 de agosto, 15:32"
-  },
-  {
-   "titulo": "Escuela para Padres de 6° Llegó primero por correo del colegio y el jueves 20 la recordaron en el grupo de la comunidad.",
-   "grupo": "6D 📕📚🏫!!!!",
-   "fecha_mensaje": null
-  },
-  {
-   "titulo": "Turno de beso y chao de 6° D Al curso le toca del 31 de agosto al 4 de septiembre. La lista se llenó sola salvo el miérc",
-   "grupo": "6D 📕📚🏫!!!!",
-   "fecha_mensaje": "viernes 7 de agosto, 13:59"
+   "fecha_mensaje": "martes 25 de agosto, 00:08"
   },
   {
    "titulo": "Ensayo de banda con el coach Agustín Gaby avisó el viernes 21 que Agustín va al ensayo del viernes 28. Va unas dos veces",
    "grupo": "BANDA 🎤🎸",
    "fecha_mensaje": "viernes 21 de agosto, 15:25"
+  },
+  {
+   "titulo": "Turno de beso y chao de 6° D Al curso le toca del 31 de agosto al 4 de septiembre. La lista se llenó sola salvo el miérc",
+   "grupo": "6D 📕📚🏫!!!!",
+   "fecha_mensaje": "viernes 7 de agosto, 13:59"
   },
   {
    "titulo": "Comisiones de actividades de 6° D Caro pidió cuatro papás o mamás por comisión para tres actividades del segundo semestr",
@@ -138,14 +133,24 @@
    "fecha_mensaje": "viernes 7 de agosto, 14:55"
   },
   {
+   "titulo": "Convivencia de despedida de Santi Morales La delegada avisó el martes 25 a las 8:03 que es la última semana de los Moral",
+   "grupo": "PK-C CPH CJA",
+   "fecha_mensaje": "martes 25 de agosto, 17:14"
+  },
+  {
+   "titulo": "Semana del Colegio, alianza verde La delegada lo pasó el lunes 24 a las 12:58: a Prekínder C le tocó la alianza verde y",
+   "grupo": "PK-C CPH CJA",
+   "fecha_mensaje": "lunes 24 de agosto, 16:59"
+  },
+  {
    "titulo": "Primera junta de la comunidad de Prekínder C Fabián y Vale organizan este semestre y la idea es juntarse tres veces. La",
    "grupo": "6D 📕📚🏫!!!!",
    "fecha_mensaje": "viernes 7 de agosto, 13:59"
   },
   {
    "titulo": "Día de la Chilenidad Xabi baila con el Primer Ciclo de 11:15 a 12:15; Jaci y Juanjo con el Segundo Ciclo de 12:30 a 13:3",
-   "grupo": "PK-C CPH CJA",
-   "fecha_mensaje": "viernes 14 de agosto, 16:28"
+   "grupo": "Cuarto Básico D - 2026🧍‍♀️🧍1L de aceite + 1kg de azucar",
+   "fecha_mensaje": "viernes 7 de agosto, 14:55"
   },
   {
    "titulo": "Vacaciones de septiembre Una semana completa, del calendario anual del curso.",
